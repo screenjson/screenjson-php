@@ -3,13 +3,14 @@
 namespace ScreenJSON\Document;
 
 use ScreenJSON\Interfaces\TitleInterface;
+use ScreenJSON\Interfaces\Encryptable;
 use ScreenJSON\Interfaces\Translatable;
 use \JsonSerializable;
 use \Carbon\Carbon;
 
 use ScreenJSON\Enums;
 
-class Title implements TitleInterface, Translatable, JsonSerializable
+class Title implements TitleInterface, Translatable, Encryptable, JsonSerializable
 {    
     protected array $translations = [
         Enums\Language::ENGLISH => ""

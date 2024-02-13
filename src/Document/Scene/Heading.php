@@ -2,7 +2,10 @@
 
 namespace ScreenJSON\Document\Scene;
 
+use ScreenJSON\Interfaces\ContentInterface;
 use ScreenJSON\Interfaces\HeadingInterface;
+use ScreenJSON\Interfaces\MetaInterface;
+use ScreenJSON\Interfaces\Encryptable;
 use \JsonSerializable;
 use \Carbon\Carbon;
 
@@ -15,15 +18,17 @@ class Heading implements HeadingInterface, JsonSerializable
 {
     protected int $numbering;
 
-    protected string $context;
+    protected int $page;
 
-    protected string $setting;
+    protected ContentInterface $context;
 
-    protected string $sequence;
+    protected ContentInterface $setting;
 
-    protected string $description;
+    protected ContentInterface $sequence;
 
-    protected ?Meta $meta;
+    protected ContentInterface $description;
+
+    protected MetaInterface $meta;
 
     public function jsonSerialize() : array
     {
