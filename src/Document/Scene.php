@@ -4,6 +4,7 @@ namespace ScreenJSON\Document;
 
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
+use ScreenJSON\Interfaces\ElementInterface;
 use ScreenJSON\Interfaces\HeadingInterface;
 use ScreenJSON\Interfaces\MetaInterface;
 use ScreenJSON\Interfaces\SceneInterface;
@@ -13,7 +14,7 @@ use \Carbon\Carbon;
 class Scene implements SceneInterface, JsonSerializable
 {
     public function __construct (
-        protected HeadingInterface $heading = null,
+        protected ?HeadingInterface $heading = null,
         protected ?UuidInterface $id = null,
         protected ?Carbon $created = null,
         protected ?Carbon $modified = null,
@@ -47,6 +48,18 @@ class Scene implements SceneInterface, JsonSerializable
         {
             $this->modified = Carbon::now();
         }
+    }
+
+    public function element (?ElementInterface $element = null) : self | ElementInterface
+    {
+        if ( $element )
+        {
+            $this->body[] = $element;
+
+            return $this;
+        }
+
+        return end ($this->body);
     }
 
     public function jsonSerialize() : array

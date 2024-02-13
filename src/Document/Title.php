@@ -12,9 +12,22 @@ use ScreenJSON\Enums;
 
 class Title implements TitleInterface, Translatable, Encryptable, JsonSerializable
 {    
-    protected array $translations = [
-        Enums\Language::ENGLISH => ""
-    ];
+    public function __construct (
+        protected string|array $translations,
+        protected ?string $lang = Enums\Language::ENGLISH,
+    ) {
+        if ( is_string ($translations) )
+        {
+            $str = $translations;
+            $this->translations = [];
+            $this->translations[$lang] = $str;
+        }
+
+        if ( is_array ($translations) )
+        {
+            $this->translations = $translations;
+        }
+    }
 
     public function add (string $lang, string $value) : string | self 
     {

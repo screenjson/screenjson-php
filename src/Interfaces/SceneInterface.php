@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 interface SceneInterface 
 {
+    /*
     protected ?UuidInterface $id = null;
 
     protected HeadingInterface $heading;
@@ -44,4 +45,5 @@ interface SceneInterface
     protected Carbon $modified;
 
     protected ?MetaInterface $meta = null;
+    */
 }

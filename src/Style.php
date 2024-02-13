@@ -11,8 +11,8 @@ class Style implements StyleInterface, JsonSerializable
 {
     public function __construct (
         protected ?string $id = null,
-        protected ?bool $default = null,
         protected ?string $content = null,
+        protected ?bool $default = null,
         protected ?MetaInterface $meta = null,
     ) {}
 

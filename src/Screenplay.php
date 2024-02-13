@@ -5,8 +5,12 @@ namespace ScreenJSON;
 use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Uuid;
 use ScreenJSON\Interfaces\DocumentInterface;
+use ScreenJSON\Interfaces\CoverInterface;
 use ScreenJSON\Interfaces\EncryptionInterface;
+use ScreenJSON\Interfaces\FooterInterface;
+use ScreenJSON\Interfaces\HeaderInterface;
 use ScreenJSON\Interfaces\LicenseInterface;
+use ScreenJSON\Interfaces\SceneInterface;
 use ScreenJSON\Interfaces\ScreenplayInterface;
 use ScreenJSON\Interfaces\TitleInterface;
 use \JsonSerializable;
@@ -54,6 +58,8 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
                 }
             }
         }
+
+        $this->document = new Document;
     }
 
     private function __defaults () : self 
@@ -64,6 +70,42 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
         }
 
         return $this;
+    }
+
+    public function cover (?CoverInterface $cover = null) : self | CoverInterface
+    {
+        if ( $cover )
+        {
+            $this->document->cover ($cover);
+
+            return $this;
+        }
+
+        return $this->document?->cover;
+    }
+
+    public function footer (?FooterInterface $footer = null) : self | FooterInterface
+    {
+        if ( $footer )
+        {
+            $this->document->footer ($footer);
+
+            return $this;
+        }
+
+        return $this->document?->footer;
+    }
+
+    public function header (?HeaderInterface $header = null) : self | HeaderInterface
+    {
+        if ( $header )
+        {
+            $this->document->header ($header);
+
+            return $this;
+        }
+
+        return $this->document?->header;
     }
 
     public function jsonSerialize() : array
@@ -89,5 +131,17 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
             'revisions'         => $this->revisions,
             'taggable'          => $this->taggable,
         ];
+    }
+
+    public function scene (?SceneInterface $scene = null) : self | SceneInterface
+    {
+        if ( $scene )
+        {
+            $this->document->scenes ($scene);
+
+            return $this;
+        }
+
+        return end ($this->document->scenes());
     }
 }
