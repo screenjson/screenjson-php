@@ -4,6 +4,7 @@ namespace ScreenJSON\Interfaces;
 
 interface HeaderInterface 
 {
+    /*
     protected bool $cover;
 
     protected bool $display;
@@ -15,4 +16,5 @@ interface HeaderInterface
     protected ContentInterface $content;
 
     protected MetaInterface $meta;
+    */
 }

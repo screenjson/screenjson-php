@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 interface DerivationInterface 
 {
+    /*
     protected UuidInterface $id;
 
     protected string $type;
@@ -14,4 +15,5 @@ interface DerivationInterface
     protected ContentInterface $title;
 
     protected MetaInterface $meta;
+    */
 }

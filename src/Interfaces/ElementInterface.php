@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 interface ElementInterface 
 {
+    /*
     protected UuidInterface $id;
 
     protected ?UuidInterface $parent;
@@ -52,4 +53,5 @@ interface ElementInterface
     protected array $revisions = [];
 
     protected array $styles = [];
+    */
 }

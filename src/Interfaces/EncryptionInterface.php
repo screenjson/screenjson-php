@@ -4,6 +4,7 @@ namespace ScreenJSON\Interfaces;
 
 interface EncryptionInterface 
 {
+    /*
     protected string $cipher;
 
     protected string $hash;
@@ -11,4 +12,5 @@ interface EncryptionInterface
     protected string $encoding;
 
     protected MetaInterface $meta;
+    */
 }

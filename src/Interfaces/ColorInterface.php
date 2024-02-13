@@ -4,6 +4,7 @@ namespace ScreenJSON\Interfaces;
 
 interface ColorInterface 
 {
+    /*
     protected string $title;
 
     protected array $rgb = [];
@@ -11,4 +12,5 @@ interface ColorInterface
     protected string $hex;
 
     protected MetaInterface $meta;
+    */
 }

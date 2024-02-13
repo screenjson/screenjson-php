@@ -6,6 +6,7 @@ use \Carbon\Carbon;
 
 interface RegistrationInterface 
 {
+    /*
     protected string $authority;
 
     protected string $identifier;
@@ -15,4 +16,5 @@ interface RegistrationInterface
     protected Carbon $modified;
 
     protected MetaInterface $meta;
+    */
 }

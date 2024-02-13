@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 interface ContributorInterface 
 {
+    /*
     protected UuidInterface $id;
 
     protected string $given;
@@ -16,4 +17,5 @@ interface ContributorInterface
     protected array $roles;
 
     protected MetaInterface $meta;
+    */
 }

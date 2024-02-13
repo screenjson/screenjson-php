@@ -4,6 +4,7 @@ namespace ScreenJSON\Interfaces;
 
 interface DocumentInterface 
 {
+    /*
     protected array $bookmarks = [];
 
     protected CoverInterface $cover;
@@ -21,4 +22,5 @@ interface DocumentInterface
     protected array $styles = [];
 
     protected array $templates = [];
+    */
 }

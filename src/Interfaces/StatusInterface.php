@@ -6,6 +6,7 @@ use \Carbon\Carbon;
 
 interface StatusInterface 
 {
+    /*
     protected string $color;
 
     protected int $round;
@@ -13,4 +14,5 @@ interface StatusInterface
     protected Carbon $updated;
 
     protected MetaInterface $meta;
+    */
 }

@@ -4,6 +4,7 @@ namespace ScreenJSON\Interfaces;
 
 interface StyleInterface 
 {
+    /*
     protected string $id;
     
     protected bool $default;
@@ -11,4 +12,5 @@ interface StyleInterface
     protected string $content;
 
     protected MetaInterface $meta;
+    */
 }

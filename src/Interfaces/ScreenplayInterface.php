@@ -6,6 +6,7 @@ use Ramsey\Uuid\UuidInterface;
 
 interface ScreenplayInterface 
 {
+    /*
     protected ExportInterface $exporter;
 
     protected ImportInterface $importer;
@@ -43,4 +44,5 @@ interface ScreenplayInterface
     protected array $revisions = [];
 
     protected array $taggable = [];
+    */
 }

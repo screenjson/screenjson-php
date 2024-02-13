@@ -20,7 +20,7 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
 
     protected ImportInterface $importer;
 
-    protected UuidInterface $id;
+    protected ?UuidInterface $id;
 
     protected string $guid;
 
@@ -57,7 +57,7 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
     public function jsonSerialize() : array
     {
         return [
-            'id'                => $this->id->toString(),
+            //'id'                => $this->id->toString(),
             'guid'              => $this->guid,
             'title'             => $this->title,
             'lang'              => $this->lang,

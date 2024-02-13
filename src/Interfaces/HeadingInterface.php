@@ -4,6 +4,7 @@ namespace ScreenJSON\Interfaces;
 
 interface HeadingInterface 
 {
+    /*
     protected int $numbering;
 
     protected int $page;
@@ -17,4 +18,5 @@ interface HeadingInterface
     protected ContentInterface $description;
 
     protected MetaInterface $meta;
+    */
 }

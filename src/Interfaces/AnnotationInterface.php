@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 interface AnnotationInterface 
 {
+    /*
     protected UuidInterface $id;
 
     protected ?string $parent;
@@ -22,4 +23,5 @@ interface AnnotationInterface
     protected ?string $color;
 
     protected MetaInterface $meta;
+    */
 }

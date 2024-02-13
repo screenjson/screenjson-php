@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 interface BookmarkInterface 
 {
+    /*
     protected UuidInterface $id;
 
     protected ?UuidInterface $parent;
@@ -20,4 +21,5 @@ interface BookmarkInterface
     protected ContentInterface $title;
 
     protected ContentInterface $description;
+    */
 }
