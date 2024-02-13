@@ -12,7 +12,7 @@ interface ScreenplayInterface
 
     protected TitleInterface $title;
 
-    protected string $Lang;
+    protected string $lang;
 
     protected string $locale;
 
