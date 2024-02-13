@@ -16,7 +16,11 @@ use ScreenJSON\Enums;
 
 class Character extends Element implements ElementInterface, JsonSerializable
 {
-    protected string $type = Enums\Element::CHARACTER;
+    public function __construct (
+        protected string $type = Enums\Element::CHARACTER
+    ) {
+        parent::__construct ($type);
+    }    
 
     public function jsonSerialize() : array
     {

@@ -8,9 +8,9 @@ use Carbon\Carbon;
 interface BookmarkInterface 
 {
     /*
-    protected UuidInterface $id;
+    protected ?UuidInterface $id = null;
 
-    protected ?UuidInterface $parent;
+    protected ?UuidInterface $parent = null;
 
     protected int $scene;
 

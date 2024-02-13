@@ -6,9 +6,10 @@ use ScreenJSON\Interfaces\ValidatorInterface;
 
 class Validator implements ValidatorInterface 
 {
-    protected string $schema;
-    
-    protected array $errors = [];
+    public function __construct(
+        protected string $schema = 'resources/screenjson.json',
+        protected array $errors = [],
+    ) {}
 
     public function errors () : array
     {

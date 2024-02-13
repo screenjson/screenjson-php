@@ -10,10 +10,10 @@ use ScreenJSON\Exceptions\InvalidFileFormatException;
 
 class Yaml extends Importer implements YamlInterface, ImportInterface, ParserInterface
 {
-    protected string $ext = 'yml';
-
-    public function __construct (protected string $file_path)
-    {
+    public function __construct (
+        protected string $file_path,
+        protected string $ext = 'yml'
+    ) {
         $this->file_path = $file_path;
         
         $this->validate ();
@@ -53,7 +53,7 @@ class Yaml extends Importer implements YamlInterface, ImportInterface, ParserInt
             throw new InvalidFileFormatException ("File does not have the correct mime type.");
         }
 
-        if (! yaml_parse_file ($this->file_path) )
+        if (! \yaml_parse_file ($this->file_path) )
         {
             throw new InvalidFileFormatException ("Could not load Yaml structure.");
         }

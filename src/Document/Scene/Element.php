@@ -6,41 +6,34 @@ use ScreenJSON\Meta;
 use ScreenJSON\Revision;
 use ScreenJSON\Document\Scene\Content;
 
+use ScreenJSON\Interfaces\ContentInterface;
+use ScreenJSON\Interfaces\MetaInterface;
+use ScreenJSON\Interfaces\RevisionInterface;
+
 use \Carbon\Carbon;
 
 use ScreenJSON\Enums;
 
 abstract class Element 
 {
-    protected string $perspective = Enums\Perspective::TWO_D;
-
-    protected bool $interactivity = false;
-
-    protected string $lang = Enums\Language::ENGLISH;
-
-    protected string $charset = Enums\Charset::UTF8;
-
-    protected string $dir = Enums\Direction::LTR;
-
-    protected bool $omitted = false;
-
-    protected bool $locked = false;
-
-    protected bool $encrypted = false;
-
-    protected string $html = "p";
-
-    protected string $css = "col-md-12";
-
-    protected array $access = [];
-
-    protected ?Revision $revision = null;
-
-    protected array $styles = [];
-
-    protected ?Content $content = null;
-
-    protected Meta $meta;
+    public function __construct (
+        protected string $type =  Enums\Element::ACTION,
+        protected ?ContentInterface $content = null,
+        protected string $perspective = Enums\Perspective::TWO_D,
+        protected bool $interactivity = false,
+        protected string $lang = Enums\Language::ENGLISH,
+        protected string $charset = Enums\Charset::UTF8,
+        protected string $dir = Enums\Direction::LTR,
+        protected bool $omitted = false,
+        protected bool $locked = false,
+        protected bool $encrypted = false,
+        protected string $html = "p",
+        protected string $css = "col-md-12",
+        protected array $access = [],
+        protected ?RevisionInterface $revision = null,
+        protected array $styles = [],
+        protected ?MetaInterface $meta = null,
+    ) {}
 
     public function charset (?string $value = null) : string | self 
     {

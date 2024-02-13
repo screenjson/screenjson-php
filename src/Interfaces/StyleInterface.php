@@ -11,6 +11,6 @@ interface StyleInterface
 
     protected string $content;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

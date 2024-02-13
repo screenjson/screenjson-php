@@ -13,6 +13,6 @@ interface StatusInterface
 
     protected Carbon $updated;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

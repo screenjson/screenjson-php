@@ -10,10 +10,10 @@ use ScreenJSON\Exceptions\InvalidFileFormatException;
 
 class FinalDraft extends Importer implements FinalDraftInterface, ImportInterface, ParserInterface
 {
-    protected string $ext = 'fdx';
-
-    public function __construct (protected string $file_path)
-    {
+    public function __construct (
+        protected string $file_path,
+        protected string $ext = 'fdx'
+    ) {
         $this->file_path = $file_path;
         
         $this->validate ();

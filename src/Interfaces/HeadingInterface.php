@@ -17,6 +17,6 @@ interface HeadingInterface
 
     protected ContentInterface $description;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

@@ -16,7 +16,11 @@ use ScreenJSON\Enums;
 
 class Dialogue extends Element implements ElementInterface, JsonSerializable
 {
-    protected string $type = Enums\Element::DIALOGUE;
+    public function __construct (
+        protected string $type = Enums\Element::DIALOGUE
+    ) {
+        parent::__construct ($type);
+    }    
 
     public function jsonSerialize() : array
     {

@@ -10,10 +10,10 @@ use ScreenJSON\Exceptions\InvalidFileFormatException;
 
 class Fountain extends Importer implements FountainInterface, ImportInterface, ParserInterface
 {
-    protected string $ext = 'fountain';
-
-    public function __construct (protected string $file_path)
-    {
+    public function __construct (
+        protected string $file_path,
+        protected string $ext = 'fountain'
+    ) {
         $this->file_path = $file_path;
         
         $this->validate ();

@@ -3,6 +3,7 @@
 namespace ScreenJSON\Document;
 
 use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 use ScreenJSON\Interfaces\HeadingInterface;
 use ScreenJSON\Interfaces\MetaInterface;
 use ScreenJSON\Interfaces\SceneInterface;
@@ -11,48 +12,47 @@ use \Carbon\Carbon;
 
 class Scene implements SceneInterface, JsonSerializable
 {
-    protected UuidInterface $id;
+    public function __construct (
+        protected HeadingInterface $heading = null,
+        protected ?UuidInterface $id = null,
+        protected ?Carbon $created = null,
+        protected ?Carbon $modified = null,
+        protected ?MetaInterface $meta = null,
+        protected array $body = [],
+        protected array $animals = [],
+        protected array $authors = [],
+        protected array $cast = [],
+        protected array $contributors = [],
+        protected array $extra = [],
+        protected array $locations = [],
+        protected array $moods = [],
+        protected array $props = [],
+        protected array $sfx = [],
+        protected array $sounds = [],
+        protected array $tags = [],
+        protected array $vfx = [],
+        protected array $wardrobe = [],
+    ) {
+        if (! $id )
+        {
+            $this->id = Uuid::uuid4();
+        }
 
-    protected HeadingInterface $heading;
+        if (! $this->created )
+        {
+            $this->created = Carbon::now();
+        }
 
-    protected array $body = [];
-
-    protected array $animals = [];
-
-    protected array $authors = [];
-
-    protected array $cast = [];
-
-    protected array $contributors = [];
-
-    protected array $extra = [];
-
-    protected array $locations = [];
-
-    protected array $moods = [];
-
-    protected array $props = [];
-
-    protected array $sfx = [];
-
-    protected array $sounds = [];
-
-    protected array $tags = [];
-
-    protected array $vfx = [];
-
-    protected array $wardrobe = [];
-
-    protected Carbon $created;
-
-    protected Carbon $modified;
-
-    protected MetaInterface $meta;
+        if (! $this->modified )
+        {
+            $this->modified = Carbon::now();
+        }
+    }
 
     public function jsonSerialize() : array
     {
         return [
-            'id'            => $this->id->toString(),
+            'id'            => $this->id?->toString(),
             'heading'       => $this->heading,
             'body'          => $this->body,
             'animals'       => $this->animals,

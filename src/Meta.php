@@ -8,7 +8,9 @@ use \Carbon\Carbon;
 
 class Meta implements MetaInterface, JsonSerializable
 {
-    protected array $map = [];
+    public function __construct (
+        protected array $map = []
+    ) {}
 
     public function jsonSerialize() : array
     {

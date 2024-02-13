@@ -8,9 +8,9 @@ use Carbon\Carbon;
 interface RevisionInterface 
 {
     /*
-    protected UuidInterface $id;
+    protected ?UuidInterface $id = null;
 
-    protected ?UuidInterface $parent;
+    protected ?UuidInterface $parent = null;
 
     protected int $index;
 
@@ -20,6 +20,6 @@ interface RevisionInterface
 
     protected Carbon $created;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

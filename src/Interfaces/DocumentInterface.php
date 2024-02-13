@@ -13,7 +13,7 @@ interface DocumentInterface
 
     protected HeaderInterface $header;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
 
     protected array $scenes = [];
 

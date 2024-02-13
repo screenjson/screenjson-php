@@ -10,10 +10,10 @@ use ScreenJSON\Exceptions\InvalidFileFormatException;
 
 class FadeIn extends Importer implements FadeInInterface, ImportInterface, ParserInterface
 {
-    protected string $ext = 'fadein';
-
-    public function __construct (protected string $file_path)
-    {
+    public function __construct (
+        protected string $file_path,
+        protected string $ext = 'fadein'
+    ) {
         $this->file_path = $file_path;
 
         $this->validate ();
@@ -72,7 +72,8 @@ class FadeIn extends Importer implements FadeInInterface, ImportInterface, Parse
             {
                 throw new InvalidFileFormatException ("Unable to read document.xml XML structure.");
 
-            $zip->close();
+                $zip->close();
+            }
         }
 
         return $this;

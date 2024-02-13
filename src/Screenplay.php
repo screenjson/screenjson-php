@@ -3,6 +3,7 @@
 namespace ScreenJSON;
 
 use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 use ScreenJSON\Interfaces\DocumentInterface;
 use ScreenJSON\Interfaces\EncryptionInterface;
 use ScreenJSON\Interfaces\LicenseInterface;
@@ -16,48 +17,61 @@ use ScreenJSON\Interfaces\ImportInterface;
 
 class Screenplay implements ScreenplayInterface, JsonSerializable
 {
-    protected ExportInterface $exporter;
+    public function __construct (
+        protected ?TitleInterface $title = null,
+        protected array $config = [],
+        protected ?LicenseInterface $license = null,
+        protected ?EncryptionInterface $encryption = null,
+        protected array $authors = [],
+        protected ?UuidInterface $id = null,
+        protected ?DocumentInterface $document = null,
+        protected ?ExportInterface $exporter = null,
+        protected ?ImportInterface $importer = null,
+        protected string $guid = 'rfc4122',
+        protected string $lang = 'en',
+        protected string $locale = 'en_US',
+        protected string $charset = 'utf8',
+        protected string $dir = 'ltr',
+        protected array $colors = [],
+        protected array $contributors = [],
+        protected array $derivations = [],
+        protected array $registrations = [],
+        protected array $revisions = [],
+        protected array $taggable = [],
+    ) {
+        if (! $id )
+        {
+            $this->id = Uuid::uuid4();
+        }
 
-    protected ImportInterface $importer;
+        if ( count ($config) )
+        {
+            foreach (['id', 'guid', 'lang', 'locale', 'charset', 'dir'] AS $assignable)
+            {
+                if ( isset ($config[$assignable]) )
+                {
+                    $this->{$assignable} = $config[$assignable];
+                }
+            }
+        }
+    }
 
-    protected ?UuidInterface $id;
+    private function __defaults () : self 
+    {
+        if (! $this->title )
+        {
+            $this->title = new Document\Title;
+        }
 
-    protected string $guid;
-
-    protected TitleInterface $title;
-
-    protected string $lang;
-
-    protected string $locale;
-
-    protected string $charset;
-
-    protected string $dir;
-
-    protected array $authors = [];
-    
-    protected array $colors = [];
-
-    protected array $contributors = [];
-
-    protected array $derivations = [];
-    
-    protected DocumentInterface $document;
-
-    protected EncryptionInterface $encryption;
-
-    protected LicenseInterface $license;
-
-    protected array $registrations = [];
-
-    protected array $revisions = [];
-
-    protected array $taggable = [];
+        return $this;
+    }
 
     public function jsonSerialize() : array
     {
+        $this->__defaults();
+
         return [
-            //'id'                => $this->id->toString(),
+            'id'                => $this->id?->toString(),
             'guid'              => $this->guid,
             'title'             => $this->title,
             'lang'              => $this->lang,

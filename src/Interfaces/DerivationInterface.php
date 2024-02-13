@@ -8,12 +8,12 @@ use Carbon\Carbon;
 interface DerivationInterface 
 {
     /*
-    protected UuidInterface $id;
+    protected ?UuidInterface $id = null;
 
     protected string $type;
 
     protected ContentInterface $title;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

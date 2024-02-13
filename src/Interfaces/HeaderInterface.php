@@ -13,8 +13,8 @@ interface HeaderInterface
 
     protected array $omit = [];
 
-    protected ContentInterface $content;
+    protected ?ContentInterface $content = null;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

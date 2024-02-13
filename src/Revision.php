@@ -3,6 +3,7 @@
 namespace ScreenJSON;
 
 use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 use ScreenJSON\Interfaces\MetaInterface;
 use ScreenJSON\Interfaces\RevisionInterface;
 use \JsonSerializable;
@@ -10,24 +11,25 @@ use \Carbon\Carbon;
 
 class Revision implements RevisionInterface, JsonSerializable
 {
-    protected UuidInterface $id;
-
-    protected ?UuidInterface $parent;
-
-    protected int $index;
-
-    protected array $authors = [];
-
-    protected string $version;
-
-    protected Carbon $created;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected ?string $version = null,
+        protected ?int $index = null,
+        protected array $authors = [],
+        protected ?UuidInterface $id = null,
+        protected ?UuidInterface $parent = null,
+        protected ?Carbon $created = null,
+        protected ?MetaInterface $meta = null,
+    ) {
+        if (! $id )
+        {
+            $this->id = Uuid::uuid4();
+        }
+    }
 
     public function jsonSerialize() : array
     {
         return [
-            'id'       => $this->id->toString(),
+            'id'       => $this->id?->toString(),
             'parent'   => $this->parent?->toString(),
             'index'    => $this->index,
             'authors'  => $this->authors,

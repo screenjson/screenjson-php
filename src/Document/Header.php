@@ -10,17 +10,14 @@ use \Carbon\Carbon;
 
 class Header implements HeaderInterface, JsonSerializable
 {
-    protected bool $cover;
-
-    protected bool $display;
-
-    protected int $start;
-
-    protected array $omit = [];
-
-    protected ContentInterface $content;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected ?ContentInterface $content = null,
+        protected int $start = 1,
+        protected bool $cover = false,
+        protected bool $display = true,
+        protected array $omit = [],
+        protected ?MetaInterface $meta = null,
+    ) {}
 
     public function jsonSerialize() : array
     {

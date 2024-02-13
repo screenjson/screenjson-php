@@ -15,6 +15,6 @@ interface RegistrationInterface
 
     protected Carbon $modified;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

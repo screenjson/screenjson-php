@@ -9,13 +9,12 @@ use \Carbon\Carbon;
 
 class Color implements ColorInterface, JsonSerializable
 {
-    protected string $title;
-
-    protected array $rgb = [];
-
-    protected string $hex;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected ?string $title = null,
+        protected array $rgb = [],
+        protected ?string $hex = null,
+        protected ?MetaInterface $meta = null,
+    ) {}
 
     public function jsonSerialize() : array
     {

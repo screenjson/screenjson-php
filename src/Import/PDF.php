@@ -13,10 +13,10 @@ use Ottosmops\Pdftotext\Exceptions\BinaryNotFound;
 
 class PDF extends Importer implements PDFInterface, ImportInterface, ParserInterface
 {
-    protected string $ext = 'pdf';
-
-    public function __construct (protected string $file_path)
-    {
+    public function __construct (
+        protected string $file_path,
+        protected string $ext = 'pdf'
+    ) {
         $this->file_path = $file_path;
         
         $this->validate ();

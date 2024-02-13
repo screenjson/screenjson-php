@@ -16,7 +16,11 @@ use ScreenJSON\Enums;
 
 class Transition extends Element implements ElementInterface, JsonSerializable
 {
-    protected string $type = Enums\Element::TRANSITION;
+    public function __construct (
+        protected string $type = Enums\Element::TRANSITION
+    ) {
+        parent::__construct ($type);
+    }    
 
     public function jsonSerialize() : array
     {

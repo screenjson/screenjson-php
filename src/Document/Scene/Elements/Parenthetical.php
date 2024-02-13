@@ -16,7 +16,11 @@ use ScreenJSON\Enums;
 
 class Parenthetical extends Element implements ElementInterface, JsonSerializable
 {
-    protected string $type = Enums\Element::PARENTHETICAL;
+    public function __construct (
+        protected string $type = Enums\Element::PARENTHETICAL
+    ) {
+        parent::__construct ($type);
+    }    
 
     public function jsonSerialize() : array
     {

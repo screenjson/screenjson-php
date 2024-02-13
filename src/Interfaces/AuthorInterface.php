@@ -8,7 +8,7 @@ use Carbon\Carbon;
 interface AuthorInterface 
 {
     /*
-    protected UuidInterface $id;
+    protected ?UuidInterface $id = null;
 
     protected string $given;
 
@@ -16,6 +16,6 @@ interface AuthorInterface
 
     protected array $roles;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

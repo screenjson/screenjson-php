@@ -10,10 +10,12 @@ use ScreenJSON\Exceptions\InvalidFileFormatException;
 
 class Celtx extends Importer implements CeltxInterface, ImportInterface, ParserInterface
 {
-    protected string $ext = 'celtx';
+    
 
-    public function __construct (protected string $file_path)
-    {
+    public function __construct (
+        protected string $file_path,
+        protected string $ext = 'celtx'
+    ) {
         $this->file_path = $file_path;
         
         $this->validate ();

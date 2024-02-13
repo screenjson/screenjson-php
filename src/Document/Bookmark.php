@@ -3,6 +3,7 @@
 namespace ScreenJSON\Document;
 
 use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 use ScreenJSON\Interfaces\BookmarkInterface;
 use ScreenJSON\Interfaces\ContentInterface;
 use \JsonSerializable;
@@ -10,24 +11,25 @@ use \Carbon\Carbon;
 
 class Bookmark implements BookmarkInterface, JsonSerializable 
 {
-    protected UuidInterface $id;
-
-    protected ?UuidInterface $parent;
-
-    protected int $scene;
-
-    protected string $type;
-
-    protected int $element;
-
-    protected ContentInterface $title;
-
-    protected ContentInterface $description;
+    public function __construct (
+        protected ?ContentInterface $title = null,
+        protected ?ContentInterface $description = null,
+        protected ?string $type = null,
+        protected ?int $scene = null,
+        protected ?int $element = null,
+        protected ?UuidInterface $id = null,
+        protected ?UuidInterface $parent = null,
+    ) {
+        if (! $id )
+        {
+            $this->id = Uuid::uuid4();
+        }
+    }
 
     public function jsonSerialize() : array
     {
         return [
-            'id'          => $this->id->toString(),
+            'id'          => $this->id?->toString(),
             'parent'      => $this->parent?->toString(),
             'scene'       => $this->scene,
             'type'        => $this->type,

@@ -11,6 +11,6 @@ interface ColorInterface
 
     protected string $hex;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

@@ -9,6 +9,6 @@ interface LicenseInterface
 
     protected string $ref;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

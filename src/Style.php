@@ -9,13 +9,12 @@ use \Carbon\Carbon;
 
 class Style implements StyleInterface, JsonSerializable
 {
-    protected string $id;
-    
-    protected bool $default;
-
-    protected string $content;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected ?string $id = null,
+        protected ?bool $default = null,
+        protected ?string $content = null,
+        protected ?MetaInterface $meta = null,
+    ) {}
 
     public function jsonSerialize() : array
     {

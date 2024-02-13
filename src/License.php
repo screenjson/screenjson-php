@@ -9,11 +9,11 @@ use \Carbon\Carbon;
 
 class License implements LicenseInterface, JsonSerializable
 {
-    protected string $identifier;
-
-    protected string $ref;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected string $identifier = 'CC-BY-NC-ND-4.0',
+        protected string $ref = 'https://spdx.org/licenses/',
+        protected ?MetaInterface $meta = null
+    ) {}
 
     public function jsonSerialize() : array
     {

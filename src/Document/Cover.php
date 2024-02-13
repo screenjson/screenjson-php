@@ -11,16 +11,14 @@ use \Carbon\Carbon;
 
 class Cover implements CoverInterface, JsonSerializable
 {
-    protected TitleInterface $title;
-
-    protected array $authors = [];
-
-    protected array $derivations = [];
-
-    protected ContentInterface $additional;
-
-    protected MetaInterface $meta;
-
+    public function __construct (
+        protected ?TitleInterface $title,
+        protected ?ContentInterface $additional = null,
+        protected array $derivations = [],
+        protected array $authors = [],
+        protected ?MetaInterface $meta = null
+    ) {}
+    
     public function jsonSerialize() : array
     {
         return [

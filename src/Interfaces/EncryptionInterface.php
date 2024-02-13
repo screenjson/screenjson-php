@@ -11,6 +11,6 @@ interface EncryptionInterface
 
     protected string $encoding;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

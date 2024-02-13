@@ -9,13 +9,17 @@ use \Carbon\Carbon;
 
 class Status implements StatusInterface, JsonSerializable
 {
-    protected string $color;
-
-    protected int $round;
-
-    protected Carbon $updated;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected string $color = 'white',
+        protected int $round = 0,
+        protected ?Carbon $updated = null,
+        protected ?MetaInterface $meta = null,
+    ) {
+        if (! $updated )
+        {
+            $this->updated = Carbon::now();
+        }
+    }
 
     public function jsonSerialize() : array
     {

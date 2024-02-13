@@ -11,7 +11,7 @@ interface ScreenplayInterface
 
     protected ImportInterface $importer;
     
-    protected UuidInterface $id;
+    protected ?UuidInterface $id = null;
 
     protected string $guid;
 

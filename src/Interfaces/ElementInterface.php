@@ -8,9 +8,9 @@ use Carbon\Carbon;
 interface ElementInterface 
 {
     /*
-    protected UuidInterface $id;
+    protected ?UuidInterface $id = null;
 
-    protected ?UuidInterface $parent;
+    protected ?UuidInterface $parent = null;
 
     protected ?UuidInterface $scene;
 
@@ -26,7 +26,7 @@ interface ElementInterface
 
     protected string $type;
 
-    protected ContentInterface $content;
+    protected ?ContentInterface $content = null;
 
     protected array $contributors = [];
 
@@ -48,7 +48,7 @@ interface ElementInterface
 
     protected bool $omitted;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
 
     protected array $revisions = [];
 

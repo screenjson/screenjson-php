@@ -13,6 +13,6 @@ interface CoverInterface
 
     protected ContentInterface $additional;
 
-    protected MetaInterface $meta;
+    protected ?MetaInterface $meta = null;
     */
 }

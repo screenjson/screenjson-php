@@ -16,19 +16,15 @@ use ScreenJSON\Enums\Sequence;
 
 class Heading implements HeadingInterface, JsonSerializable
 {
-    protected int $numbering;
-
-    protected int $page;
-
-    protected ContentInterface $context;
-
-    protected ContentInterface $setting;
-
-    protected ContentInterface $sequence;
-
-    protected ContentInterface $description;
-
-    protected MetaInterface $meta;
+    public function __construct (
+        protected ?ContentInterface $context = null,
+        protected ?ContentInterface $setting = null,
+        protected ?ContentInterface $sequence = null,
+        protected ?int $numbering = null,
+        protected ?int $page = null,
+        protected ?ContentInterface $description = null,
+        protected ?MetaInterface $meta = null,
+    ) {}
 
     public function jsonSerialize() : array
     {

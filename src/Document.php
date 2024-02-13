@@ -13,23 +13,17 @@ use \Carbon\Carbon;
 
 class Document implements DocumentInterface, JsonSerializable
 {
-    protected array $bookmarks = [];
-
-    protected CoverInterface $cover;
-
-    protected FooterInterface $footer;
-
-    protected HeaderInterface $header;
-
-    protected MetaInterface $meta;
-
-    protected array $scenes = [];
-
-    protected StatusInterface $status;
-
-    protected array $styles = [];
-
-    protected array $templates = [];
+    public function __construct (
+        protected ?CoverInterface $cover = null,
+        protected ?FooterInterface $footer = null,
+        protected ?HeaderInterface $header = null,
+        protected ?StatusInterface $status = null,
+        protected ?MetaInterface $meta = null,
+        protected array $scenes = [],
+        protected array $bookmarks = [],
+        protected array $styles = [],
+        protected array $templates = [],
+    ) {}
 
     public function jsonSerialize() : array
     {
