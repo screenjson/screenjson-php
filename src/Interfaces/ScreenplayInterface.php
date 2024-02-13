@@ -6,6 +6,10 @@ use Ramsey\Uuid\UuidInterface;
 
 interface ScreenplayInterface 
 {
+    protected ExportInterface $exporter;
+
+    protected ImportInterface $importer;
+    
     protected UuidInterface $id;
 
     protected string $guid;

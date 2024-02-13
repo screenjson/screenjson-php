@@ -11,8 +11,15 @@ use ScreenJSON\Interfaces\TitleInterface;
 use \JsonSerializable;
 use \Carbon\Carbon;
 
+use ScreenJSON\Interfaces\ExportInterface;
+use ScreenJSON\Interfaces\ImportInterface;
+
 class Screenplay implements ScreenplayInterface, JsonSerializable
 {
+    protected ExportInterface $exporter;
+
+    protected ImportInterface $importer;
+
     protected UuidInterface $id;
 
     protected string $guid;
