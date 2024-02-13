@@ -10,4 +10,10 @@ class Decrypter implements DecrypterInterface
     {
 
     }
+
+    public function decrypt (): string
+    {
+
+        return '';
+    }
 }

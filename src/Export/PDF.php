@@ -1,11 +1,15 @@
 <?php 
 
-namespace ScreenJSON\Import;
+namespace ScreenJSON\Export;
 
 use ScreenJSON\Interfaces\PDFInterface;
 use ScreenJSON\Interfaces\ExportInterface;
 
-class PDF implements PDFInterface, ExportInterface
+class PDF extends Exporter implements PDFInterface, ExportInterface
 {
-
+    public function convert () : self 
+    {
+        
+        return $this;
+    }
 }

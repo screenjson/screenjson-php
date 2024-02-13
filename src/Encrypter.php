@@ -11,8 +11,9 @@ class Encrypter implements EncrypterInterface
 
     }
 
-    public function save (protected string $file_path, string $password)
+    public function encrypt (): string
     {
 
+        return '';
     }
 }

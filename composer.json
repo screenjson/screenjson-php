@@ -29,6 +29,7 @@
         "ramsey/uuid": "*",
         "nesbot/carbon": "*",
         "justinrainbow/json-schema": "*",
+        "swaggest/json-schema": "*",
         "xrstf/fountain": "*",
         "ottosmops/pdftotext": "*"
     },

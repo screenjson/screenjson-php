@@ -1,11 +1,15 @@
 <?php 
 
-namespace ScreenJSON\Import;
+namespace ScreenJSON\Export;
 
 use ScreenJSON\Interfaces\ExportInterface;
 use ScreenJSON\Interfaces\CeltxInterface;
 
-class Celtx implements CeltxInterface, ExportInterface
+class Celtx extends Exporter implements CeltxInterface, ExportInterface
 {
-
+    public function convert () : self 
+    {
+        
+        return $this;
+    }
 }
