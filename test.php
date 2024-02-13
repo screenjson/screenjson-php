@@ -12,6 +12,7 @@ use ScreenJSON\Document\Scene;
 
 use ScreenJSON\Document\Scene\Heading;
 use ScreenJSON\Document\Scene\Elements\Action;
+use ScreenJSON\Document\Scene\Elements\Dialogue;
 
 $screenplay = new Screenplay (
     new Title ('My New Screenplay') , [
@@ -34,10 +35,13 @@ $screenplay
     )));
 
 $screenplay->scene (
-    (new Scene (new Heading))
+    (new Scene (new Heading (new Content ('INT'), new Content ('SOME LOCATION'), new Content ('DAY'))))
         ->element (new Action (new Content (
             'Something happens here'
         )))
+        ->element (new Dialogue (new Content (
+            'Hey, give me back my gun!'
+        ), 'O.C', false))
 );
 
 echo json_encode ($screenplay, JSON_PRETTY_PRINT);

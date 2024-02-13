@@ -142,11 +142,16 @@ $screenplay
     )));
 
 $screenplay->scene (
-    (new Scene (new Heading))
+    (new Scene (new Heading (new Content ('INT'), new Content ('SOME LOCATION'), new Content ('DAY'))))
         ->element (new Action (new Content (
             'Something happens here'
         )))
+        ->element (new Dialogue (new Content (
+            'Hey, give me back my gun!'
+        ), 'O.C', false))
 );
+
+echo json_encode ($screenplay, JSON_PRETTY_PRINT);
 
 echo json_encode ($screenplay, JSON_PRETTY_PRINT);
 ```
