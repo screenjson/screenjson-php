@@ -11,43 +11,56 @@ use ScreenJSON\Interfaces\SceneInterface;
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Scene implements SceneInterface, JsonSerializable
+use ScreenJSON\Common;
+
+class Scene extends Common implements SceneInterface, JsonSerializable
 {
     public function __construct (
         protected ?HeadingInterface $heading = null,
         protected ?UuidInterface $id = null,
+        protected ?UuidInterface $parent = null,
+        protected array $authors = null,
         protected ?Carbon $created = null,
         protected ?Carbon $modified = null,
-        protected ?MetaInterface $meta = null,
-        protected array $body = [],
-        protected array $animals = [],
-        protected array $authors = [],
-        protected array $cast = [],
-        protected array $contributors = [],
-        protected array $extra = [],
-        protected array $locations = [],
-        protected array $moods = [],
-        protected array $props = [],
-        protected array $sfx = [],
-        protected array $sounds = [],
-        protected array $tags = [],
-        protected array $vfx = [],
-        protected array $wardrobe = [],
+        protected array $body = null,
+        protected array $animals = null,
+        protected array $cast = null,
+        protected array $extra = null,
+        protected array $locations = null,
+        protected array $moods = null,
+        protected array $props = null,
+        protected array $sfx = null,
+        protected array $sounds = null,
+        protected array $tags = null,
+        protected array $vfx = null,
+        protected array $wardrobe = null,
     ) {
         if (! $id )
         {
             $this->id = Uuid::uuid4();
         }
+    }
 
-        if (! $this->created )
-        {
-            $this->created = Carbon::now();
-        }
+    public function defaults () : self 
+    {
+        $this->animals      = [];
+        $this->authors      = [];
+        $this->cast         = [];
+        $this->contributors = [];
+        $this->extra        = [];
+        $this->locations    = [];
+        $this->moods        = [];
+        $this->props        = [];
+        $this->sfx          = [];
+        $this->sounds       = [];
+        $this->tags         = [];
+        $this->vfx          = [];
+        $this->wardrobe     = [];
 
-        if (! $this->modified )
-        {
-            $this->modified = Carbon::now();
-        }
+        $this->created = Carbon::now();
+        $this->modified = Carbon::now();
+
+        return $this;
     }
 
     public function element (?ElementInterface $element = null) : self | ElementInterface
@@ -64,14 +77,14 @@ class Scene implements SceneInterface, JsonSerializable
 
     public function jsonSerialize() : array
     {
-        return [
+        $data = [
             'id'            => $this->id?->toString(),
             'heading'       => $this->heading,
+            'authors'       => $this->authors,
+            'contributors'  => $this->contributors,
             'body'          => $this->body,
             'animals'       => $this->animals,
-            'authors'       => $this->authors,
             'cast'          => $this->cast,
-            'contributors'  => $this->contributors,
             'extra'         => $this->extra,
             'locations'     => $this->locations,
             'moods'         => $this->moods,
@@ -85,5 +98,15 @@ class Scene implements SceneInterface, JsonSerializable
             'modified'      => $this->modified?->format('c'),
             'meta'          => $this->meta,
         ];
+
+        foreach ($data AS $k => $v)
+        {
+            if (! $v || is_null ($v) )
+            {
+                unset ($data[$k]);
+            }
+        }
+
+        return $data;
     }
 }

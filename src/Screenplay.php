@@ -19,13 +19,12 @@ use \Carbon\Carbon;
 use ScreenJSON\Interfaces\ExportInterface;
 use ScreenJSON\Interfaces\ImportInterface;
 
-class Screenplay implements ScreenplayInterface, JsonSerializable
+class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
 {
     public function __construct (
         protected ?TitleInterface $title = null,
         protected array $config = [],
         protected ?LicenseInterface $license = null,
-        protected ?EncryptionInterface $encryption = null,
         protected array $authors = [],
         protected ?UuidInterface $id = null,
         protected ?DocumentInterface $document = null,
@@ -37,7 +36,6 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
         protected string $charset = 'utf8',
         protected string $dir = 'ltr',
         protected array $colors = [],
-        protected array $contributors = [],
         protected array $derivations = [],
         protected array $registrations = [],
         protected array $revisions = [],
@@ -62,11 +60,11 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
         $this->document = new Document;
     }
 
-    private function __defaults () : self 
+    private function defaults () : self 
     {
         if (! $this->title )
         {
-            $this->title = new Document\Title;
+            $this->title = new Document\Title ("Untitled Screenplay");
         }
 
         return $this;
@@ -110,7 +108,7 @@ class Screenplay implements ScreenplayInterface, JsonSerializable
 
     public function jsonSerialize() : array
     {
-        $this->__defaults();
+        $this->defaults();
 
         return [
             'id'                => $this->id?->toString(),

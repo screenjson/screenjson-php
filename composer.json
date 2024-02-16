@@ -1,7 +1,7 @@
 {
-    "name": "azcoppen/screenjson-php",
+    "name": "screenjson/screenjson-php",
     "description": "PHP SDK for ScreenJSON",
-    "homepage": "https://github.com/alexc-hollywood/screenjson-php",
+    "homepage": "https://github.com/screenjson/screenjson-php",
     "keywords": [
         "screenjson",
         "screenplay",
@@ -19,11 +19,11 @@
         }
     ],
     "support": {
-        "source": "https://github.com/alexc-hollywood/screenjson-php",
-        "docs": "https://github.com/alexc-hollywood/screenjson-php/blob/main/README.md",
-        "issues": "https://github.com/alexc-hollywood/screenjson-php/package-name/issues"
+        "source": "https://github.com/screenjson/screenjson-php",
+        "docs": "https://github.com/screenjson/screenjson-php/blob/main/README.md",
+        "issues": "https://github.com/screenjson/screenjson-php/package-name/issues"
     },
-    "type": "project",
+    "type": "library",
     "require": {
         "php": "^8.0",
         "ext-sodium": "*",
@@ -79,6 +79,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
