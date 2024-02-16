@@ -24,6 +24,15 @@ class Validator implements ValidatorInterface
         protected string $schema = '/../resources/data/schema.json',
         protected array $errors = [],
     ) {
+        $this->__checks ($json_file);
+
+        $this->json_file = $json_file;
+
+        $this->validate ();
+    }
+
+    private function __checks (string $json_file) : self
+    {
         if (! file_exists (dirname(__FILE__) . $this->schema) || !is_readable (dirname(__FILE__) . $this->schema) || !filesize (dirname(__FILE__) . $this->schema) )
         {
             throw new Exception ("Can't find internal JSON Schema reference file. Aborting.");
@@ -54,9 +63,18 @@ class Validator implements ValidatorInterface
             throw new InvalidFileFormatException ("File is not valid JSON.");
         }
 
+        return $this;
+    }
+
+    public function examine (string $json_file) : self 
+    {
+        $this->__checks ($json_file);
+        
         $this->json_file = $json_file;
 
         $this->validate ();
+        
+        return $this;
     }
 
     public function errors () : array

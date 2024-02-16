@@ -1,11 +1,10 @@
 # ScreenJSON PHP SDK
 
-This package provides an SDK library for implementing ScreenJSON into a PHP application.
+This package provides an SDK library for implementing ScreenJSON into a PHP application. It is a *work in progress* and should only be considered an implementation refernece.
 
 ## Installation
 
 Require the package:
-
 
     composer require screenjson/screenjson-php
 
@@ -190,6 +189,30 @@ $screenplay->scene (
 )
 
 echo json_encode ($screenplay, JSON_PRETTY_PRINT);
+```
+
+### Laravel Integration
+
+*This is very much a work in progress, with placeholder functionality. Do not use in production.*
+
+This SDK library is automatically discoverable by Laravel and injects different root-level objects into the framework's service container as implementation *contracts*.
+
+Example methods:
+
+```php
+app (ScreenplayEncryptionContract::class)->load ('myfile.json')->save ('encrypted.json', 'mypassword');
+app (ScreenplayDecryptionContract::class)->load ('encrypted.json')->save ('clear.json', 'mypassword');
+app (ScreenplayValidationContract::class)->examine ('myfile.json');
+```
+
+```php
+$screenplay = app (Screenplay::class);
+```
+
+To publish the config:
+
+```bash
+php artisan vendor:publish --tag=screenjson
 ```
 
     

@@ -9,6 +9,8 @@ interface ValidatorInterface
     
     protected array $errors = [];
     */
+
+    public function examine (string $json_file) : self;
     
     public function errors () : array;
 

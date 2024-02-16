@@ -52,6 +52,13 @@
             "Tests\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ScreenJSON\\Laravel\\ScreenjsonSDKServiceProvider"
+            ]
+        }
+    },
     "scripts": {
         "test": [
             "@php vendor/bin/phpunit"
