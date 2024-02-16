@@ -2,7 +2,7 @@
 
 namespace ScreenJSON\Enums;
 
-enum Sequence
+enum Role
 {
     const AUTHOR = "author";
     const EDITOR = "editor";

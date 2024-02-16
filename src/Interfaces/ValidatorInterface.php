@@ -10,11 +10,9 @@ interface ValidatorInterface
     protected array $errors = [];
     */
     
-    public function errors () : array
+    public function errors () : array;
 
-    public function fails () : bool
+    public function fails () : bool;
 
-    public function passes () : bool
-
-    public function validate () : self
+    public function passes () : bool;
 }
