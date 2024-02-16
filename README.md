@@ -1,19 +1,21 @@
 # ScreenJSON PHP SDK
 
-This package provides a module library.
+This package provides an SDK library for implementing ScreenJSON into a PHP application.
 
 ## Installation
 
 Require the package:
 
 
-    composer require azcoppen/screenjson-php
+    composer require screenjson/screenjson-php
 
 ## Usage
 
 ### Validate a ScreenJSON document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $validator = new ScreenJSON\Validator ('myfile.json');
 
 if ( $validator->fails() )
@@ -25,6 +27,8 @@ if ( $validator->fails() )
 ### Encrypt/decrypt a ScreenJSON document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $encrypted = new ScreenJSON\Encrypter ('myfile.json')
     ->save('encrypted.json', 'mypassword');
 
@@ -36,30 +40,40 @@ $decrypted = new ScreenJSON\Decrypter ('encrypted.txt', 'mypassword');
 #### Import a PDF document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay = new ScreenJSON\Import\PDF ('myfile.pdf');
 ```
 
 #### Import a Final Draft Pro document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay = new ScreenJSON\Import\FinalDraft ('myfile.fdx');
 ```
 
 #### Import a FadeIn Pro document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay = new ScreenJSON\Import\FadeIn ('myfile.fadein');
 ```
 
 #### Import a Fountain (Markdown) document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay = new ScreenJSON\Import\Fountain ('myfile.fountain');
 ```
 
 #### Import a Celtx document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay = new ScreenJSON\Import\Celtx ('myfile.celtx');
 ```
 
@@ -68,48 +82,64 @@ $screenplay = new ScreenJSON\Import\Celtx ('myfile.celtx');
 #### Export a ScreenJSON file
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save ('myfile.json');
 ```
 
 #### Export a YAML file
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save ('myfile.yaml');
 ```
 
 #### Export a PDF document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save (new ScreenJSON\Export\PDF, 'myfile.pdf');
 ```
 
 #### Export a Final Draft Pro document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save (new ScreenJSON\Export\FinalDraft, 'myfile.fdx');
 ```
 
 #### Export a FadeIn Pro document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save (new ScreenJSON\Export\FadeIn, 'myfile.fadein');
 ```
 
 #### Export a Fountain (Markdown) document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save (new ScreenJSON\Export\Fountain, 'myfile.fountain');
 ```
 
 #### Export a Celtx document
 
 ```php
+require_once ('vendor/autoload.php');
+
 $screenplay->save (new ScreenJSON\Export\Celtx, 'myfile.celtx');
 ```
 
 ### Build a screenplay from scratch
 
 ```php
+require_once ('vendor/autoload.php');
+
 use ScreenJSON\Screenplay;
 use ScreenJSON\Content;
 use ScreenJSON\Document\Title;
@@ -136,13 +166,16 @@ $screenplay = new Screenplay (
     'dir'     => 'ltr'
 ]);
 
-$screenplay->cover (new Cover (new Title ('My New Story')))
-    ->header ((new Header)->content('Here is some header content'))
-    ->footer ((new Footer)->content('Here is some footer content'));
+$screenplay->cover (
+        $cover = new Cover (new Title ('My New Story'))
+    )
+    ->header ($header = (new Header)->content('Here is some header content'))
+    ->footer ($footer = (new Footer)->content('Here is some footer content'));
 
+# Content can be a string, string + lang, an array of language-keyed strings, or a Content object (same args)
+# Specify it in the constructor, or use the content() helper if you need to build the object manually
 $screenplay->scene (
-    new Scene (
-        new Heading (new Content ('INT'), new Content ("DON CORLEONE'S HOME OFFICE"), new Content ('DAY'), 1, 8),
+    $scene = (new Scene ($heading = new Heading (new Content ('INT'), new Content ("DON CORLEONE'S HOME OFFICE"), new Content ('DAY'), 1, 8)))
         ->element ((new Action)->content ("Corleone stands, turning his back toward Bonasera."))
         ->element ((new Character)->content ('DON CORLEONE'))
         ->element ((new Parenthetical)->content ('turning, looking around'))
@@ -151,10 +184,9 @@ $screenplay->scene (
             'fr' => "Tu es venu me voir le jour du mariage de ma fille, et tu m'as demandé de commettre un meurtre.",
         ]))
         ->element ((new Transition)->content ('SLOW PAN TO:'))
-        ->element ((new Action)->content ("Bonasera kisses his hand."))
+        ->element ((new Action)->content ("Bonasera kisses his hand.", 'en'))
         ->element ((new Shot)->content ("CLOSE UP ON HAND"))
         ->element ((new General)->content ("The End"))
-    )
 )
 
 echo json_encode ($screenplay, JSON_PRETTY_PRINT);
