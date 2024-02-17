@@ -205,7 +205,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         $this->defaults();
 
         return array_merge ([
-            'id'                => $this->id?->toString(),
+            'id'                => is_string ($this->id) ? $this->id : $this->id?->toString(),
             'guid'              => $this->guid,
             'title'             => $this->title,
             'lang'              => $this->lang,
@@ -253,6 +253,11 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         }
 
         return end ($this->document->scenes());
+    }
+
+    public function scenes () : array 
+    {
+        return $this?->document->scenes();
     }
 
     public function status (?StatusInterface $status = null) : self | StatusInterface

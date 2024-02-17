@@ -28,7 +28,7 @@ class Author extends Surface implements AuthorInterface, JsonSerializable
     public function jsonSerialize() : array
     {
         return array_merge ([
-            'id'        => $this->id?->toString(),
+            'id'        => is_string ($this->id) ? $this->id : $this->id?->toString(),
             'given'     => mb_convert_case ($this->given, MB_CASE_TITLE, "UTF-8"),
             'family'    => mb_convert_case ($this->family, MB_CASE_TITLE, "UTF-8"),
             'roles'     => $this->roles,

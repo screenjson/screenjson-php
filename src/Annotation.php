@@ -35,7 +35,7 @@ class Annotation extends Surface implements AnnotationInterface, JsonSerializabl
     public function jsonSerialize() : array
     {
         return array_merge([
-            'id'            => $this->id?->toString(),
+            'id'            => is_string ($this->id) ? $this->id : $this->id?->toString(),
             'parent'        => $this->parent?->toString(),
             'highlight'     => $this->highlight,
             'contributor'   => $this->contributor,

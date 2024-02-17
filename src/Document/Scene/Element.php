@@ -11,8 +11,7 @@ use ScreenJSON\Enums;
 abstract class Element extends Surface
 {
     protected ?ContentInterface $content = null;
-    protected ?UuidInterface $id = null;
-    protected ?UuidInterface $parent = null;
+    protected ?array $config = [];
     protected ?string $lang = null;
     protected ?string $charset = null;
     protected ?string $dir = null;
@@ -25,15 +24,30 @@ abstract class Element extends Surface
     protected ?string $css = null;
     protected ?array $access = null;
     protected ?array $styles = null;
+    protected ?array $authors = null;
+    protected ?string $id = null;
+    protected ?string $parent = null;
+
+    public function __apply_config_map (array $config) : self 
+    {
+        foreach ($config AS $key => $val)
+        {
+            $this->{$key} = $val;
+        }
+
+        return $this;
+    }
 
     public function __build (array $params = []) : array 
     {
         $data = array_merge ([
-            'id'        => $this->id?->toString(),
-            'parent'    => $this->parent?->toString(),
+            'id'        => is_string ($this->id) ? $this->id : $this->id?->toString(),
+            'parent'    => $this->parent,
         ], 
         $params,
         [
+            "authors"       => $this->authors,
+            "annotations"   => $this->annotations,
             "content"       => $this->content,
             "contributors"  => $this->contributors,
             "encryption"    => $this->encryption,
@@ -55,7 +69,12 @@ abstract class Element extends Surface
 
         foreach ($data AS $k => $v)
         {
-            if (! $v || is_null ($v) )
+            if ( is_null ($v) )
+            {
+                unset ($data[$k]);
+            }
+
+            if ( is_array ($v) && count ($v) == 0 )
             {
                 unset ($data[$k]);
             }

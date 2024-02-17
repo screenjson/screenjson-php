@@ -24,12 +24,18 @@ class Dialogue extends Element implements ElementInterface, JsonSerializable
         protected ?string $origin = null,
         protected bool $dual = false,
         protected ?ContentInterface $content = null,
+        protected ?array $config = [],
         protected ?string $id = null,
         protected ?string $parent = null,
     ) {
         if (! $id )
         {
             $this->id = Uuid::uuid4();
+        }
+
+        if ( $config && is_array ($config) && count ($config) )
+        {
+            $this->__apply_config_map ($config);
         }
     }
 

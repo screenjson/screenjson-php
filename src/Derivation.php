@@ -31,7 +31,7 @@ class Derivation extends Surface implements DerivationInterface, JsonSerializabl
     public function jsonSerialize() : array
     {
         return array_merge ([
-            'id'    => $this->id?->toString(),
+            'id'    => is_string ($this->id) ? $this->id : $this->id?->toString(),
             'type'  => $this->type,
             'title' => $this->title,
         ], $this->meta?->all() ?? []);

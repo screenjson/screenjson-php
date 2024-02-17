@@ -22,12 +22,18 @@ class General extends Element implements ElementInterface, JsonSerializable
 {
     public function __construct (
         protected ?ContentInterface $content = null,
+        protected ?array $config = [],
         protected ?string $id = null,
         protected ?string $parent = null,
     ) {
         if (! $id )
         {
             $this->id = Uuid::uuid4();
+        }
+
+        if ( $config && is_array ($config) && count ($config) )
+        {
+            $this->__apply_config_map ($config);
         }
     }   
 

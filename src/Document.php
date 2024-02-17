@@ -96,7 +96,7 @@ class Document extends Surface implements DocumentInterface, JsonSerializable
         ], $this->meta?->all() ?? []);
     }
 
-    public function scenes (?SceneInterface $scene = null) : self | SceneInterface
+    public function scenes (?SceneInterface $scene = null) : self | array
     {
         if ( $scene )
         {

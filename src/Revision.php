@@ -38,7 +38,7 @@ class Revision extends Surface implements RevisionInterface, JsonSerializable
     public function jsonSerialize() : array
     {
         return array_merge ([
-            'id'       => $this->id?->toString(),
+            'id'       => is_string ($this->id) ? $this->id : $this->id?->toString(),
             'parent'   => $this->parent?->toString(),
             'index'    => $this->index,
             'authors'  => $this->authors,

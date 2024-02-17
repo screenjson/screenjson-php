@@ -35,7 +35,7 @@ class Bookmark implements BookmarkInterface, JsonSerializable
     public function jsonSerialize() : array
     {
         return [
-            'id'          => $this->id?->toString(),
+            'id'          => is_string ($this->id) ? $this->id : $this->id?->toString(),
             'parent'      => $this->parent?->toString(),
             'scene'       => $this->scene,
             'type'        => $this->type,

@@ -121,7 +121,7 @@ abstract class Surface
 
     public function id () : string 
     {
-        return $this->id?->toString();
+        return is_string ($this->id) ? $this->id : $this->id?->toString();
     }
 
     public function lang (?string $lang = null) : self | string 
