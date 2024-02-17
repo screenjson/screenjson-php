@@ -20,25 +20,13 @@ class Content implements ContentInterface, Translatable, Encryptable, JsonSerial
         {
             $str = $translations;
             $this->translations = [];
-            $this->translations[$lang] = $str;
+            $this->translations[$lang] = trim ($str);
         }
 
         if ( is_array ($translations) )
         {
             $this->translations = $translations;
         }
-    }
-
-    public function add (string $lang, string $value) : string | self 
-    {
-        if ( $value )
-        {
-            $this->translations[$lang] = $value;
-
-            return $this;
-        }
-
-        return $this->{$lang};
     }
 
     public function jsonSerialize() : array

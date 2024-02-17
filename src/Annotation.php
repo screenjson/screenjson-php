@@ -2,30 +2,39 @@
 
 namespace ScreenJSON;
 
-use Ramsey\Uuid\UuidInterface;
-use ScreenJSON\Interfaces\AnnotationInterface;
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\MetaInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
+use ScreenJSON\Interfaces\{
+    AnnotationInterface,
+    ContentInterface
+};
 
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Annotation implements AnnotationInterface, JsonSerializable
+class Annotation extends Surface implements AnnotationInterface, JsonSerializable
 {
     public function __construct (
         protected ?ContentInterface $content = null,
-        protected ?UuidInterface $contributor,
+        protected ?string $contributor,
         protected ?string $color,
+        protected ?Carbon $created,
         protected array $highlight = [],
         protected ?UuidInterface $id = null,
         protected ?UuidInterface $parent = null,
-        protected ?Carbon $created,
-        protected ?MetaInterface $meta = null,
-    ) {}
+    ) {
+        if (! $id )
+        {
+            $this->id = Uuid::uuid4();
+        }
+    }
 
     public function jsonSerialize() : array
     {
-        return [
+        return array_merge([
             'id'            => $this->id?->toString(),
             'parent'        => $this->parent?->toString(),
             'highlight'     => $this->highlight,
@@ -33,7 +42,6 @@ class Annotation implements AnnotationInterface, JsonSerializable
             'content'       => $this->content,
             'color'         => $this->color,
             'created'       => $this->created?->format ('c'),
-            'meta'          => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
     }
 }

@@ -8,9 +8,31 @@ use \Carbon\Carbon;
 
 class Meta implements MetaInterface, JsonSerializable
 {
+    protected array $map = [];
+
     public function __construct (
-        protected array $map = []
-    ) {}
+        ?array $data = null
+    ) {
+        if ($data)
+        {
+            $this->map = array_merge ($this->map, $data);
+        }
+    }
+
+    public function add (array $data) : self 
+    {
+        if ($data)
+        {
+            $this->map = array_merge ($this->map, $data);
+        }
+
+        return $this;
+    }
+
+    public function all () : array 
+    {
+        return ['meta' => $this->map];
+    }
 
     public function jsonSerialize() : array
     {

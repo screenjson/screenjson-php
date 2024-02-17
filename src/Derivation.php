@@ -2,21 +2,25 @@
 
 namespace ScreenJSON;
 
-use Ramsey\Uuid\UuidInterface;
-use Ramsey\Uuid\Uuid;
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\DerivationInterface;
-use ScreenJSON\Interfaces\MetaInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
+use ScreenJSON\Interfaces\{
+    ContentInterface,
+    DerivationInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Derivation implements DerivationInterface, JsonSerializable
+class Derivation extends Surface implements DerivationInterface, JsonSerializable
 {
     public function __construct (
         protected ?string $type = null,
         protected ?ContentInterface $title = null,
         protected ?UuidInterface $id = null,
-        protected ?MetaInterface $meta = null,
     ) {
         if (! $id )
         {
@@ -26,11 +30,10 @@ class Derivation implements DerivationInterface, JsonSerializable
 
     public function jsonSerialize() : array
     {
-        return [
+        return array_merge ([
             'id'    => $this->id?->toString(),
             'type'  => $this->type,
             'title' => $this->title,
-            'meta'  => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
     }
 }

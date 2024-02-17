@@ -2,24 +2,33 @@
 
 namespace ScreenJSON;
 
-use Ramsey\Uuid\UuidInterface;
-use Ramsey\Uuid\Uuid;
-use ScreenJSON\Interfaces\DocumentInterface;
-use ScreenJSON\Interfaces\CoverInterface;
-use ScreenJSON\Interfaces\EncryptionInterface;
-use ScreenJSON\Interfaces\FooterInterface;
-use ScreenJSON\Interfaces\HeaderInterface;
-use ScreenJSON\Interfaces\LicenseInterface;
-use ScreenJSON\Interfaces\SceneInterface;
-use ScreenJSON\Interfaces\ScreenplayInterface;
-use ScreenJSON\Interfaces\TitleInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
+use ScreenJSON\Interfaces\{
+    AuthorInterface,
+    ColorInterface,
+    DerivationInterface,
+    DocumentInterface,
+    ExportInterface,
+    CoverInterface,
+    FooterInterface,
+    HeaderInterface,
+    ImportInterface,
+    LicenseInterface,
+    RegistrationInterface,
+    SceneInterface,
+    ScreenplayInterface,
+    TitleInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-use ScreenJSON\Interfaces\ExportInterface;
-use ScreenJSON\Interfaces\ImportInterface;
 
-class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
+class Screenplay extends Surface implements ScreenplayInterface, JsonSerializable
 {
     public function __construct (
         protected ?TitleInterface $title = null,
@@ -60,14 +69,28 @@ class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
         $this->document = new Document;
     }
 
-    private function defaults () : self 
+    public function author (AuthorInterface $author) : self 
     {
-        if (! $this->title )
-        {
-            $this->title = new Document\Title ("Untitled Screenplay");
-        }
+        $this->authors[] = $author;
 
         return $this;
+    }
+
+    public function authors () : array 
+    {
+        return $this->authors;
+    }
+
+    public function color (ColorInterface $color) : self 
+    {
+        $this->colors[] = $color;
+
+        return $this;
+    }
+
+    public function colors () : array 
+    {
+        return $this->colors;
     }
 
     public function cover (?CoverInterface $cover = null) : self | CoverInterface
@@ -80,6 +103,38 @@ class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
         }
 
         return $this->document?->cover;
+    }
+
+    public function decrypt (string $password) 
+    {
+        $decrypter = new Decrypter;
+    }
+
+    private function defaults () : self 
+    {
+        if (! $this->title )
+        {
+            $this->title = new Document\Title ("Untitled Screenplay");
+        }
+
+        return $this;
+    }
+
+    public function derivations () : array
+    {
+        return $this->derivations;
+    }
+
+    public function derivation (DerivationInterface $derivation) : self
+    {
+        $this->derivations[] = $derivation;
+
+        return $this;
+    }
+
+    public function encrypt (string $password) 
+    {
+        $encrypter = new Encrypter;
     }
 
     public function footer (?FooterInterface $footer = null) : self | FooterInterface
@@ -106,11 +161,23 @@ class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
         return $this->document?->header;
     }
 
+    public function license (?LicenseInterface $license = null) : LicenseInterface | self
+    {
+        if ( $license )
+        {
+            $this->license = $license;
+
+            return $this;
+        }
+
+        return $this->license;
+    }
+
     public function jsonSerialize() : array
     {
         $this->defaults();
 
-        return [
+        return array_merge ([
             'id'                => $this->id?->toString(),
             'guid'              => $this->guid,
             'title'             => $this->title,
@@ -128,7 +195,25 @@ class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
             'registrations'     => $this->registrations,
             'revisions'         => $this->revisions,
             'taggable'          => $this->taggable,
-        ];
+        ], $this->meta?->all() ?? []);
+    }
+
+    public function registration (RegistrationInterface $registration) : self 
+    {
+        $this->registrations[] = $registration;
+
+        return $this;
+    }
+
+    public function registrations () : array 
+    {
+        return $this->registrations;
+    }
+
+    public function save (ExportInterface $exporter, string $save_path) : int
+    {
+
+        return filesize ($save_path);
     }
 
     public function scene (?SceneInterface $scene = null) : self | SceneInterface
@@ -141,5 +226,22 @@ class Screenplay extends Common implements ScreenplayInterface, JsonSerializable
         }
 
         return end ($this->document->scenes());
+    }
+
+    public function taggable (?array $data = null) : array | self
+    {
+        if ( $data )
+        {
+            array_merge ($this->taggable, $data);
+
+            return $this;
+        }
+
+        return $this->taggable;
+    }
+
+    public function validate () : array
+    {
+        return (new Validator)->raw ($this)->errors();
     }
 }

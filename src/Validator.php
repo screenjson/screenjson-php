@@ -2,12 +2,17 @@
 
 namespace ScreenJSON;
 
-use ScreenJSON\Interfaces\ValidatorInterface;
+use ScreenJSON\Interfaces\{
+    ScreenplayInterface,
+    ValidatorInterface
+};
 
-use ScreenJSON\Exceptions\InvalidFileFormatException;
-use ScreenJSON\Exceptions\NonExistentInputFileException;
-use ScreenJSON\Exceptions\UnreadableInputFileException;
-use ScreenJSON\Exceptions\ZeroSizeInputFileException;
+use ScreenJSON\Exceptions\{
+    InvalidFileFormatException,
+    NonExistentInputFileException,
+    UnreadableInputFileException,
+    ZeroSizeInputFileException
+};
 
 use Opis\JsonSchema\{
     Validator AS Engine,
@@ -20,15 +25,18 @@ use \Exception;
 class Validator implements ValidatorInterface 
 {
     public function __construct(
-        protected string $json_file,
+        protected ?string $json_file = null,
         protected string $schema = '/../resources/data/schema.json',
         protected array $errors = [],
     ) {
-        $this->__checks ($json_file);
+        if ( $json_file )
+        {
+            $this->__checks ($json_file);
 
-        $this->json_file = $json_file;
-
-        $this->validate ();
+            $this->json_file = $json_file;
+    
+            $this->validate ();
+        }
     }
 
     private function __checks (string $json_file) : self
@@ -90,6 +98,43 @@ class Validator implements ValidatorInterface
     public function passes () : bool
     {
         return count ($this->errors) == 0;
+    }
+
+    public function raw (ScreenplayInterface $screenplay) : self
+    {
+        $validator = new Engine();
+
+        $validator->resolver()->registerRaw (
+            file_get_contents (dirname(__FILE__) . $this->schema)
+        );
+
+        $result = $validator->setMaxErrors(10)->validate (
+            json_decode ( json_encode ($screenplay) ),
+            'https://screenjson.com/schema.json'
+        );
+
+        if (! $result->isValid() ) 
+        {
+            $formatter = new ErrorFormatter();
+
+            $builder = function (ValidationError $error, ?array $subErrors = null) use ($formatter) 
+            {
+                $ret = [
+                    'keyword' => $error->keyword(),
+                    'message' => $formatter->formatErrorMessage($error),
+                ];
+            
+                if ($subErrors) {
+                    $ret['subErrors'] = $subErrors;
+                }
+            
+                return $ret;
+            };
+
+            $this->errors = $formatter->formatNested ($result->error(), $builder);
+        } 
+
+        return $this;
     }
 
     private function validate () : self

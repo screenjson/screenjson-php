@@ -16,18 +16,16 @@ class Footer implements FooterInterface, JsonSerializable
         protected bool $cover = false,
         protected bool $display = true,
         protected array $omit = [],
-        protected ?MetaInterface $meta = null,
     ) {}
 
     public function jsonSerialize() : array
     {
-        return [
+        return array_merge ([
             'cover'     => $this->cover,
             'display'   => $this->display,
             'start'     => $this->start,
             'omit'      => $this->omit,
             'content'   => $this->content,
-            'meta'      => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
     }
 }

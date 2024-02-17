@@ -8,7 +8,7 @@ use ScreenJSON\Interfaces\ContentInterface;
 use ScreenJSON\Common;
 use ScreenJSON\Enums;
 
-abstract class Element extends Common
+abstract class Element extends Surface
 {
     protected ?ContentInterface $content = null;
     protected ?UuidInterface $id = null;

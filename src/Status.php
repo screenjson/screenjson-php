@@ -2,18 +2,16 @@
 
 namespace ScreenJSON;
 
-use ScreenJSON\Interfaces\MetaInterface;
 use ScreenJSON\Interfaces\StatusInterface;
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Status implements StatusInterface, JsonSerializable
+class Status extends Surface implements StatusInterface, JsonSerializable
 {
     public function __construct (
         protected string $color = 'white',
         protected int $round = 0,
         protected ?Carbon $updated = null,
-        protected ?MetaInterface $meta = null,
     ) {
         if (! $updated )
         {
@@ -23,11 +21,10 @@ class Status implements StatusInterface, JsonSerializable
 
     public function jsonSerialize() : array
     {
-        return [
+        return array_merge ([
             'color'   => $this->color,
             'round'   => $this->round,
             'updated' => $this->updated?->format('c'),
-            'meta'    => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
     }
 }

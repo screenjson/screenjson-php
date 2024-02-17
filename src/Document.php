@@ -2,24 +2,25 @@
 
 namespace ScreenJSON;
 
-use ScreenJSON\Interfaces\CoverInterface;
-use ScreenJSON\Interfaces\DocumentInterface;
-use ScreenJSON\Interfaces\HeaderInterface;
-use ScreenJSON\Interfaces\FooterInterface;
-use ScreenJSON\Interfaces\MetaInterface;
-use ScreenJSON\Interfaces\SceneInterface;
-use ScreenJSON\Interfaces\StatusInterface;
+use ScreenJSON\Interfaces\{
+    CoverInterface,
+    DocumentInterface,
+    HeaderInterface,
+    FooterInterface,
+    SceneInterface,
+    StatusInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Document implements DocumentInterface, JsonSerializable
+class Document extends Surface implements DocumentInterface, JsonSerializable
 {
     public function __construct (
         protected ?CoverInterface $cover = null,
         protected ?FooterInterface $footer = null,
         protected ?HeaderInterface $header = null,
         protected ?StatusInterface $status = null,
-        protected ?MetaInterface $meta = null,
         protected array $scenes = [],
         protected array $bookmarks = [],
         protected array $styles = [],
@@ -71,7 +72,7 @@ class Document implements DocumentInterface, JsonSerializable
 
     public function jsonSerialize() : array
     {
-        return [
+        return array_merge ([
             'bookmarks' => $this->bookmarks,
             'cover'     => $this->cover,
             'header'    => $this->header,
@@ -80,8 +81,7 @@ class Document implements DocumentInterface, JsonSerializable
             'styles'    => $this->styles,
             'templates' => $this->templates,
             'scenes'    => $this->scenes,
-            'meta'      => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
     }
 
     public function scenes (?SceneInterface $scene = null) : self | SceneInterface

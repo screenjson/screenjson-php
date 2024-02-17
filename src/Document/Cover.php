@@ -16,17 +16,15 @@ class Cover implements CoverInterface, JsonSerializable
         protected ?ContentInterface $additional = null,
         protected array $derivations = [],
         protected array $authors = [],
-        protected ?MetaInterface $meta = null
     ) {}
     
     public function jsonSerialize() : array
     {
-        return [
+        return array_merge ([
             'title'       => $this->title,
             'authors'     => $this->authors,
             'derivations' => $this->derivations,
             'additional'  => $this->additional,
-            'meta'        => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
     }
 }

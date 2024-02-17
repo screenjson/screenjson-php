@@ -3,7 +3,7 @@
 namespace ScreenJSON;
 
 use ScreenJSON\Interfaces\EncryptionInterface;
-use ScreenJSON\Interfaces\MetaInterface;
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
@@ -14,8 +14,7 @@ class Encryption implements EncryptionInterface, JsonSerializable
     public function __construct (
         protected string $cipher = Enums\Cipher::AES_256,
         protected string $hash = Enums\Hash::SHA256,
-        protected string $encoding = Enums\Encoding::HEX,
-        protected ?MetaInterface $meta = null,
+        protected string $encoding = Enums\Encoding::HEX
     ) {}
 
     public function jsonSerialize() : array

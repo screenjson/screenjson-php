@@ -6,14 +6,23 @@ use ScreenJSON\Interfaces\DecrypterInterface;
 
 class Decrypter implements DecrypterInterface 
 {
-    public function __construct (protected string $file_path, string $password)
+    public function __construct (
+        protected ?string $file_path = null,
+        protected ?string $password = null,
+    )
     {
 
     }
 
-    public function decrypt (): string
+    public function load (string $json_file) : self
     {
 
-        return '';
+        return $this;
+    }
+
+    public function save (string $save_path, string $password) : self
+    {
+        
+        return $this;
     }
 }

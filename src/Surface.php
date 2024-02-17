@@ -2,16 +2,18 @@
 
 namespace ScreenJSON;
 
-use ScreenJSON\Interfaces\AnnotationInterface;
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\ContributorInterface;
-use ScreenJSON\Interfaces\EncryptionInterface;
-use ScreenJSON\Interfaces\MetaInterface;
-use ScreenJSON\Interfaces\RevisionInterface;
+use ScreenJSON\Interfaces\{
+    AnnotationInterface,
+    ContentInterface,
+    ContributorInterface,
+    EncryptionInterface,
+    MetaInterface,
+    RevisionInterface
+};
 
 use ScreenJSON\Enums;
 
-abstract class Common 
+abstract class Surface 
 {
     protected array $annotations = [];
     protected array $contributors = [];
@@ -37,7 +39,7 @@ abstract class Common
         return end ($this->annotations);
     }
 
-    public function content (?mixed $value = null, ?string $lang = null) : string | self 
+    public function content (mixed $value = null, ?string $lang = null) : string | self 
     {
         if ( $value )
         {
@@ -53,8 +55,8 @@ abstract class Common
 
             if ( is_string ($value) )
             {
-                $this->content = $lang ? new Content ([$lang => $value]) 
-                    : new Content ([Enums\Language::ENGLISH => $value]);
+                $this->content = $lang ? new Content ([$lang => trim ($value)]) 
+                    : new Content ([Enums\Language::ENGLISH => trim ($value)]);
             }
 
             return $this;
@@ -92,11 +94,23 @@ abstract class Common
         return $this->encryption;
     }
 
-    public function meta (?MetaInterface $meta = null) : MetaInterface | self | null
+    public function id () : string 
     {
-        if ( $meta )
+        return $this->id?->toString();
+    }
+
+    public function meta (?array $data = null) : MetaInterface | self | null
+    {
+        if ( $data )
         {
-            $this->meta = $meta;
+            if ( $this->meta instanceof MetaInterface )
+            {
+                $this->meta->add ($data);
+
+                return $this;
+            }
+
+            $this->meta = new Meta ($data);
 
             return $this;
         }

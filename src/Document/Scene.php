@@ -11,9 +11,9 @@ use ScreenJSON\Interfaces\SceneInterface;
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-use ScreenJSON\Common;
+use ScreenJSON\Surface;
 
-class Scene extends Common implements SceneInterface, JsonSerializable
+class Scene extends Surface implements SceneInterface, JsonSerializable
 {
     public function __construct (
         protected ?HeadingInterface $heading = null,
@@ -77,7 +77,7 @@ class Scene extends Common implements SceneInterface, JsonSerializable
 
     public function jsonSerialize() : array
     {
-        $data = [
+        $data = array_merge ([
             'id'            => $this->id?->toString(),
             'heading'       => $this->heading,
             'authors'       => $this->authors,
@@ -96,8 +96,7 @@ class Scene extends Common implements SceneInterface, JsonSerializable
             'wardrobe'      => $this->wardrobe,
             'created'       => $this->created?->format('c'),
             'modified'      => $this->modified?->format('c'),
-            'meta'          => $this->meta,
-        ];
+        ], $this->meta?->all() ?? []);
 
         foreach ($data AS $k => $v)
         {
