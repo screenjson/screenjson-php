@@ -3,12 +3,14 @@
 namespace ScreenJSON;
 
 use ScreenJSON\Interfaces\{
+    BookmarkInterface,
     CoverInterface,
     DocumentInterface,
     HeaderInterface,
     FooterInterface,
     SceneInterface,
-    StatusInterface
+    StatusInterface,
+    StyleInterface
 };
 
 use \JsonSerializable;
@@ -30,8 +32,18 @@ class Document extends Surface implements DocumentInterface, JsonSerializable
         {
             $this->status = new Status ('white', 0);
         }
+    }
 
-        $this->styles[] = new Style ('courier-12', 'font-family: courier; font-size: 12px;', 1);
+    public function bookmarks (?BookmarkInterface $bookmark = null) : self | array 
+    {
+        if ($bookmark)
+        {
+            $this->bookmarks[] = $bookmark;
+
+            return $this;
+        }
+
+        return $this->bookmarks;
     }
 
     public function cover (?CoverInterface $cover = null) : self | CoverInterface
@@ -94,5 +106,29 @@ class Document extends Surface implements DocumentInterface, JsonSerializable
         }
 
         return $this->scenes;
+    }
+
+    public function status (?StatusInterface $status = null) : self | StatusInterface 
+    {
+        if ($status)
+        {
+            $this->status = $status;
+
+            return $this;
+        }
+
+        return $this->status;
+    }
+
+    public function styles (?StyleInterface $style = null) : self | array 
+    {
+        if ($style)
+        {
+            $this->styles[] = $style;
+
+            return $this;
+        }
+
+        return $this->styles;
     }
 }

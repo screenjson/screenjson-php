@@ -2,12 +2,17 @@
 
 namespace ScreenJSON\Document;
 
-use Ramsey\Uuid\UuidInterface;
-use Ramsey\Uuid\Uuid;
-use ScreenJSON\Interfaces\ElementInterface;
-use ScreenJSON\Interfaces\HeadingInterface;
-use ScreenJSON\Interfaces\MetaInterface;
-use ScreenJSON\Interfaces\SceneInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
+use ScreenJSON\Interfaces\{
+    ElementInterface,
+    HeadingInterface,
+    SceneInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
@@ -17,8 +22,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 {
     public function __construct (
         protected ?HeadingInterface $heading = null,
-        protected ?UuidInterface $id = null,
-        protected ?UuidInterface $parent = null,
+        protected ?string $id = null,
+        protected ?string $parent = null,
         protected array $authors = null,
         protected ?Carbon $created = null,
         protected ?Carbon $modified = null,

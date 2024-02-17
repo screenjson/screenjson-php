@@ -2,13 +2,17 @@
 
 namespace ScreenJSON\Document;
 
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\HeaderInterface;
-use ScreenJSON\Interfaces\MetaInterface;
+use ScreenJSON\Interfaces\{
+    ContentInterface,
+    HeaderInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Header implements HeaderInterface, JsonSerializable
+use ScreenJSON\Surface;
+
+class Header extends Surface implements HeaderInterface, JsonSerializable
 {
     public function __construct (
         protected ?ContentInterface $content = null,

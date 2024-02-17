@@ -2,10 +2,16 @@
 
 namespace ScreenJSON\Document;
 
-use Ramsey\Uuid\UuidInterface;
-use Ramsey\Uuid\Uuid;
-use ScreenJSON\Interfaces\BookmarkInterface;
-use ScreenJSON\Interfaces\ContentInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
+use ScreenJSON\Interfaces\{
+    BookmarkInterface,
+    ContentInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
@@ -17,8 +23,8 @@ class Bookmark implements BookmarkInterface, JsonSerializable
         protected ?string $type = null,
         protected ?int $scene = null,
         protected ?int $element = null,
-        protected ?UuidInterface $id = null,
-        protected ?UuidInterface $parent = null,
+        protected ?string $id = null,
+        protected ?string $parent = null,
     ) {
         if (! $id )
         {

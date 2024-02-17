@@ -2,14 +2,18 @@
 
 namespace ScreenJSON\Document;
 
-use ScreenJSON\Interfaces\CoverInterface;
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\MetaInterface;
-use ScreenJSON\Interfaces\TitleInterface;
+use ScreenJSON\Interfaces\{
+    CoverInterface,
+    ContentInterface,
+    TitleInterface
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 
-class Cover implements CoverInterface, JsonSerializable
+use ScreenJSON\Surface;
+
+class Cover extends Surface implements CoverInterface, JsonSerializable
 {
     public function __construct (
         protected ?TitleInterface $title,

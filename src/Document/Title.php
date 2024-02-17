@@ -2,9 +2,12 @@
 
 namespace ScreenJSON\Document;
 
-use ScreenJSON\Interfaces\TitleInterface;
-use ScreenJSON\Interfaces\Encryptable;
-use ScreenJSON\Interfaces\Translatable;
+use ScreenJSON\Interfaces\{
+    Encryptable,
+    TitleInterface,
+    Translatable
+};
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 

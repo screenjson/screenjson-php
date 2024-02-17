@@ -5,7 +5,7 @@ namespace ScreenJSON\Document\Scene;
 use Ramsey\Uuid\UuidInterface;
 use ScreenJSON\Interfaces\ContentInterface;
 
-use ScreenJSON\Common;
+use ScreenJSON\Surface;
 use ScreenJSON\Enums;
 
 abstract class Element extends Surface
@@ -64,18 +64,6 @@ abstract class Element extends Surface
         return $data;
     }
 
-    public function charset (?string $value = null) : string | self 
-    {
-        if ( $value )
-        {
-            $this->charset = $value;
-
-            return $this;
-        }
-
-        return $this->charset;
-    }
-
     public function css (?string $value = null) : string | self 
     {
         if ( $value )
@@ -108,17 +96,6 @@ abstract class Element extends Surface
         return $this;
     }
 
-    public function dir (?string $value = null) : string | self 
-    {
-        if ( $value )
-        {
-            $this->dir = $value;
-
-            return $this;
-        }
-
-        return $this->dir;
-    }
 
     public function interactivity (?bool $value = null) : bool | self 
     {
@@ -130,18 +107,6 @@ abstract class Element extends Surface
         }
 
         return $this->interactivity;
-    }
-
-    public function lang (?string $value = null) : string | self 
-    {
-        if ( $value )
-        {
-            $this->lang = $value;
-
-            return $this;
-        }
-
-        return $this->lang;
     }
 
     public function locked (?bool $value = null) : bool | self 

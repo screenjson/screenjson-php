@@ -13,4 +13,10 @@ interface EncryptionInterface
 
     protected ?MetaInterface $meta = null;
     */
+
+    public function ciphers () : array;
+
+    public function encodings() : array;
+
+    public function hashes () : array;
 }

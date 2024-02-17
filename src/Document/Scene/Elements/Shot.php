@@ -2,11 +2,17 @@
 
 namespace ScreenJSON\Document\Scene\Elements;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
 use ScreenJSON\Document\Scene\Element;
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\ElementInterface;
+
+use ScreenJSON\Interfaces\{
+    ContentInterface,
+    ElementInterface
+};
 
 use \JsonSerializable;
 
@@ -16,8 +22,8 @@ class Shot extends Element implements ElementInterface, JsonSerializable
 {
     public function __construct (
         protected ?ContentInterface $content = null,
-        protected ?UuidInterface $id = null,
-        protected ?UuidInterface $parent = null,
+        protected ?string $id = null,
+        protected ?string $parent = null,
     ) {
         if (! $id )
         {

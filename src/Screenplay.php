@@ -9,6 +9,7 @@ use Ramsey\Uuid\{
 
 use ScreenJSON\Interfaces\{
     AuthorInterface,
+    BookmarkInterface,
     ColorInterface,
     DerivationInterface,
     DocumentInterface,
@@ -21,6 +22,8 @@ use ScreenJSON\Interfaces\{
     RegistrationInterface,
     SceneInterface,
     ScreenplayInterface,
+    StatusInterface,
+    StyleInterface,
     TitleInterface
 };
 
@@ -35,7 +38,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         protected array $config = [],
         protected ?LicenseInterface $license = null,
         protected array $authors = [],
-        protected ?UuidInterface $id = null,
+        protected ?string $id = null,
         protected ?DocumentInterface $document = null,
         protected ?ExportInterface $exporter = null,
         protected ?ImportInterface $importer = null,
@@ -81,6 +84,18 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         return $this->authors;
     }
 
+    public function bookmark (BookmarkInterface $bookmark) : self 
+    {
+        $this->document?->bookmarks ($bookmark);
+
+        return $this;
+    }
+
+    public function bookmarks () : array 
+    {
+        return $this->document?->bookmarks ();
+    }
+
     public function color (ColorInterface $color) : self 
     {
         $this->colors[] = $color;
@@ -102,7 +117,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
             return $this;
         }
 
-        return $this->document?->cover;
+        return $this->document?->cover();
     }
 
     public function decrypt (string $password) 
@@ -146,7 +161,19 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
             return $this;
         }
 
-        return $this->document?->footer;
+        return $this->document?->footer();
+    }
+
+    public function guid (?string $d = null) : self | string 
+    {
+        if ($d)
+        {
+            $this->guid = $d;
+
+            return $this;
+        }
+
+        return $this->guid;
     }
 
     public function header (?HeaderInterface $header = null) : self | HeaderInterface
@@ -158,7 +185,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
             return $this;
         }
 
-        return $this->document?->header;
+        return $this->document?->header();
     }
 
     public function license (?LicenseInterface $license = null) : LicenseInterface | self
@@ -228,11 +255,41 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         return end ($this->document->scenes());
     }
 
+    public function status (?StatusInterface $status = null) : self | StatusInterface
+    {
+        if ( $status )
+        {
+            $this->document?->status ($status);
+
+            return $this;
+        }
+
+        return $this->document?->status ();
+    }
+
+    public function style (StyleInterface $style) : self 
+    {
+        $this->document?->styles ($style);
+
+        return $this;
+    }
+
+    public function styles () : array 
+    {
+        return $this->document?->styles ();
+    }
+
     public function taggable (?array $data = null) : array | self
     {
-        if ( $data )
+        if ( $data && is_array ($data) && count ($data) > 1 )
         {
-            array_merge ($this->taggable, $data);
+            foreach ($data AS $tag) // we can't use array_merge here because the var is protected
+            {
+                if (! in_array ($tag, $this->taggable) )
+                {
+                    $this->taggable[] = $tag;
+                }
+            }
 
             return $this;
         }

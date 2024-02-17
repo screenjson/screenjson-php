@@ -20,7 +20,7 @@ class Derivation extends Surface implements DerivationInterface, JsonSerializabl
     public function __construct (
         protected ?string $type = null,
         protected ?ContentInterface $title = null,
-        protected ?UuidInterface $id = null,
+        protected ?string $id = null,
     ) {
         if (! $id )
         {

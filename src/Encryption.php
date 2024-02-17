@@ -17,6 +17,23 @@ class Encryption implements EncryptionInterface, JsonSerializable
         protected string $encoding = Enums\Encoding::HEX
     ) {}
 
+    public function ciphers () : array 
+    {
+        return openssl_get_cipher_methods();
+    }
+
+    public function encodings() : array 
+    {
+        return [
+            'hex', 'base32', 'base64', 'ascii85'
+        ];
+    }
+
+    public function hashes () : array 
+    {
+        return hash_hmac_algos();
+    }
+
     public function jsonSerialize() : array
     {
         return [

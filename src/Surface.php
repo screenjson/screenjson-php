@@ -8,7 +8,8 @@ use ScreenJSON\Interfaces\{
     ContributorInterface,
     EncryptionInterface,
     MetaInterface,
-    RevisionInterface
+    RevisionInterface,
+    TitleInterface
 };
 
 use ScreenJSON\Enums;
@@ -37,6 +38,18 @@ abstract class Surface
         }
 
         return end ($this->annotations);
+    }
+
+    public function charset (?string $c = null) : self | string 
+    {
+        if ($c)
+        {
+            $this->charset = $c;
+
+            return $this;
+        }
+
+        return $this->charset;
     }
 
     public function content (mixed $value = null, ?string $lang = null) : string | self 
@@ -82,6 +95,18 @@ abstract class Surface
         return end ($this->contributors);
     }
 
+    public function dir (?string $d = null) : self | string 
+    {
+        if ($d)
+        {
+            $this->dir = $d;
+
+            return $this;
+        }
+
+        return $this->dir;
+    }
+
     public function encryption (?EncryptionInterface $encryption = null) : EncryptionInterface | self | null
     {
         if ( $encryption )
@@ -97,6 +122,30 @@ abstract class Surface
     public function id () : string 
     {
         return $this->id?->toString();
+    }
+
+    public function lang (?string $lang = null) : self | string 
+    {
+        if ($lang)
+        {
+            $this->lang = $lang;
+
+            return $this;
+        }
+
+        return $this->lang;
+    }
+
+    public function locale (?string $locale = null) : self | string 
+    {
+        if ($locale)
+        {
+            $this->locale = $locale;
+
+            return $this;
+        }
+
+        return $this->locale;
     }
 
     public function meta (?array $data = null) : MetaInterface | self | null
@@ -133,5 +182,17 @@ abstract class Surface
     public function revisions () : array 
     {
         return $this->revisions;
+    }
+
+    public function title (?TitleInterface $title = null) : TitleInterface | self 
+    {
+        if ( $title )
+        {
+            $this->title = $title;
+
+            return $this;
+        }
+
+        return $this->title;
     }
 }

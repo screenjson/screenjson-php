@@ -21,12 +21,17 @@ class Revision extends Surface implements RevisionInterface, JsonSerializable
         protected ?int $index = null,
         protected array $authors = [],
         protected ?Carbon $created = null,
-        protected ?UuidInterface $id = null,
-        protected ?UuidInterface $parent = null,
+        protected ?string $id = null,
+        protected ?string $parent = null,
     ) {
         if (! $id )
         {
             $this->id = Uuid::uuid4();
+        }
+
+        if (! $this->created )
+        {
+            $this->created = Carbon::now();
         }
     }
 

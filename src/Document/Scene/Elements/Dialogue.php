@@ -2,11 +2,17 @@
 
 namespace ScreenJSON\Document\Scene\Elements;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\{
+    UuidInterface,
+    Uuid
+};
+
 use ScreenJSON\Document\Scene\Element;
-use ScreenJSON\Interfaces\ContentInterface;
-use ScreenJSON\Interfaces\ElementInterface;
+
+use ScreenJSON\Interfaces\{
+    ContentInterface,
+    ElementInterface
+};
 
 use \JsonSerializable;
 
@@ -18,8 +24,8 @@ class Dialogue extends Element implements ElementInterface, JsonSerializable
         protected ?string $origin = null,
         protected bool $dual = false,
         protected ?ContentInterface $content = null,
-        protected ?UuidInterface $id = null,
-        protected ?UuidInterface $parent = null,
+        protected ?string $id = null,
+        protected ?string $parent = null,
     ) {
         if (! $id )
         {

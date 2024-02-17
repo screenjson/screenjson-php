@@ -18,7 +18,7 @@ class Contributor extends Surface implements ContributorInterface, JsonSerializa
         protected ?string $given = null,
         protected ?string $family = null,
         protected array $roles = [],
-        protected ?UuidInterface $id = null,
+        protected ?string $id = null,
     ) {
         if (! $id )
         {

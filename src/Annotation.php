@@ -23,8 +23,8 @@ class Annotation extends Surface implements AnnotationInterface, JsonSerializabl
         protected ?string $color,
         protected ?Carbon $created,
         protected array $highlight = [],
-        protected ?UuidInterface $id = null,
-        protected ?UuidInterface $parent = null,
+        protected ?string $id = null,
+        protected ?string $parent = null,
     ) {
         if (! $id )
         {
@@ -38,7 +38,7 @@ class Annotation extends Surface implements AnnotationInterface, JsonSerializabl
             'id'            => $this->id?->toString(),
             'parent'        => $this->parent?->toString(),
             'highlight'     => $this->highlight,
-            'contributor'   => $this->contributor?->toString(),
+            'contributor'   => $this->contributor,
             'content'       => $this->content,
             'color'         => $this->color,
             'created'       => $this->created?->format ('c'),
