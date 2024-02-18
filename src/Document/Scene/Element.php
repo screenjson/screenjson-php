@@ -5,11 +5,14 @@ namespace ScreenJSON\Document\Scene;
 use Ramsey\Uuid\UuidInterface;
 use ScreenJSON\Interfaces\ContentInterface;
 
+use ScreenJSON\Cop;
 use ScreenJSON\Surface;
 use ScreenJSON\Enums;
 
 abstract class Element extends Surface
 {
+    protected Cop $cop;
+
     protected ?ContentInterface $content = null;
     protected ?array $config = [];
     protected ?string $lang = null;
@@ -30,8 +33,47 @@ abstract class Element extends Surface
 
     public function __apply_config_map (array $config) : self 
     {
+        $this->cop = new Cop;
+
         foreach ($config AS $key => $val)
         {
+            switch ($key)
+            {
+                case 'access':
+                case 'styles':
+                    $this->cop->check ($key, $val, ['array_slugs']);
+                break;
+
+                case 'authors':
+                    $this->cop->check ($key, $val, ['array_uuids']);
+                break;
+
+                case 'charset':
+                case 'css':
+                case 'dir':
+                case 'dom':
+                    $this->cop->check ($key, $val, ['blank', 'alpha_dash']);
+                break;
+
+                case 'fov':
+                    $this->cop->check ($key, $val, ['above_zero', 'degrees']);
+                break;
+
+                case 'interactivity':
+                case 'omitted':
+                case 'locked':
+                    $this->cop->check ($key, $val, ['bool_type', 'bool_val']);
+                break;
+
+                case 'lang':
+                    $this->cop->check ($key, mb_strtoupper($val), ['blank', 'alpha_dash', 'lang']);
+                break;
+
+                case 'perspective':
+                    $this->cop->check ($key, $val, ['blank', 'alpha_dash', 'in'], ['2D', '3D']);
+                break;
+            }
+
             $this->{$key} = $val;
         }
 
@@ -87,6 +129,8 @@ abstract class Element extends Surface
     {
         if ( $value )
         {
+            $this->cop->check ('CSS', $value, ['alpha_dash']);
+
             $this->css = $value;
 
             return $this;
@@ -120,6 +164,8 @@ abstract class Element extends Surface
     {
         if ( $value )
         {
+            $this->cop->check ('Interactivity', $value, ['bool_type', 'bool_val']);
+
             $this->interactivity = $value;
 
             return $this;
@@ -132,6 +178,8 @@ abstract class Element extends Surface
     {
         if ( $value )
         {
+            $this->cop->check ('Locked', $value, ['bool_type', 'bool_val']);
+
             $this->locked = $value;
 
             return $this;
@@ -144,6 +192,8 @@ abstract class Element extends Surface
     {
         if ( $value )
         {
+            $this->cop->check ('Omitted', $value, ['bool_type', 'bool_val']);
+
             $this->omitted = $value;
 
             return $this;
@@ -156,6 +206,8 @@ abstract class Element extends Surface
     {
         if ( $value )
         {
+            $this->cop->check ('Perspective', $value, ['alpha_dash', 'in'], ['2D', '3D']);
+
             $this->perspective = $value;
 
             return $this;
@@ -168,6 +220,8 @@ abstract class Element extends Surface
     {
         if ( $value )
         {
+            $this->cop->check ('Styles', $value, ['array_slugs']);
+
             $this->styles = array_merge ($this->styles, $value);
 
             return $this;

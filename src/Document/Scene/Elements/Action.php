@@ -16,16 +16,21 @@ use ScreenJSON\Interfaces\{
 
 use \JsonSerializable;
 
+use ScreenJSON\Cop;
 use ScreenJSON\Enums;
 
 class Action extends Element implements ElementInterface, JsonSerializable
 {
+    protected Cop $cop;
+
     public function __construct (
         protected ?ContentInterface $content = null,
         protected ?array $config = [],
         protected ?string $id = null,
         protected ?string $parent = null,
     ) {
+        $this->cop = new Cop;
+
         if (! $id )
         {
             $this->id = Uuid::uuid4();

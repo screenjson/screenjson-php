@@ -16,6 +16,7 @@ use ScreenJSON\Interfaces\{
 
 use \JsonSerializable;
 
+use ScreenJSON\Cop;
 use ScreenJSON\Enums;
 
 class Parenthetical extends Element implements ElementInterface, JsonSerializable

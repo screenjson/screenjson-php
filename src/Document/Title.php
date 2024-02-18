@@ -11,14 +11,19 @@ use ScreenJSON\Interfaces\{
 use \JsonSerializable;
 use \Carbon\Carbon;
 
+use ScreenJSON\Cop;
 use ScreenJSON\Enums;
 
 class Title implements TitleInterface, Translatable, Encryptable, JsonSerializable
 {    
+    protected Cop $cop;
+
     public function __construct (
         protected string|array $translations,
         protected ?string $lang = Enums\Language::ENGLISH,
     ) {
+        $this->cop = new Cop;
+        
         if ( is_string ($translations) )
         {
             $str = $translations;

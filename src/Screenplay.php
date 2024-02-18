@@ -33,6 +33,8 @@ use \Carbon\Carbon;
 
 class Screenplay extends Surface implements ScreenplayInterface, JsonSerializable
 {
+    protected Cop $cop;
+
     public function __construct (
         protected ?TitleInterface $title = null,
         protected array $config = [],
@@ -53,6 +55,8 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         protected array $revisions = [],
         protected array $taggable = [],
     ) {
+        $this->cop = new Cop;
+
         if (! $id )
         {
             $this->id = Uuid::uuid4();
@@ -67,6 +71,16 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
                     $this->{$assignable} = $config[$assignable];
                 }
             }
+        }
+
+        if ( $guid )
+        {
+            $this->guid ($guid);
+        }
+
+        if ( $taggable )
+        {
+            $this->taggable ($taggable);
         }
 
         $this->document = new Document;
@@ -168,6 +182,8 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
     {
         if ($d)
         {
+            $this->cop->check ('GUID format', $d, ['blank', 'alpha_dash']);
+
             $this->guid = $d;
 
             return $this;
@@ -288,6 +304,8 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
     {
         if ( $data && is_array ($data) && count ($data) > 1 )
         {
+            $this->cop->check ('Taggable items', $data, ['array_slugs']);
+
             foreach ($data AS $tag) // we can't use array_merge here because the var is protected
             {
                 if (! in_array ($tag, $this->taggable) )

@@ -16,6 +16,8 @@ use ScreenJSON\Enums;
 
 abstract class Surface 
 {
+    protected Cop $cop;
+
     protected array $annotations = [];
     protected array $contributors = [];
     protected ?ContentInterface $content = null;
@@ -44,6 +46,10 @@ abstract class Surface
     {
         if ($c)
         {
+            if (! $this->cop ) { $this->cop = new Cop; }
+
+            $this->cop->check ('Charset', $c, ['blank', 'alpha_dash']);
+
             $this->charset = $c;
 
             return $this;
@@ -54,6 +60,13 @@ abstract class Surface
 
     public function content (mixed $value = null, ?string $lang = null) : string | self 
     {
+        if (! $this->cop ) { $this->cop = new Cop; }
+
+        if ($lang)
+        {
+            $this->cop->check ('Lang', $lang, ['blank', 'alpha_dash', 'lang']);
+        }
+
         if ( $value )
         {
             if ( is_object ($value) && $value instanceof ContentInterface )
@@ -64,6 +77,11 @@ abstract class Surface
             if ( is_array ($value) && count ($value) ) 
             {
                 $this->content = new Content ($value);
+
+                foreach ($value AS $k => $v)
+                {
+                    $this->cop->check ('Lang', $k, ['blank', 'alpha_dash', 'lang']);
+                }
             }
 
             if ( is_string ($value) )
@@ -99,6 +117,10 @@ abstract class Surface
     {
         if ($d)
         {
+            if (! $this->cop ) { $this->cop = new Cop; }
+
+            $this->cop->check ('Direction', $d, ['blank', 'alpha_dash']);
+
             $this->dir = $d;
 
             return $this;
@@ -128,6 +150,10 @@ abstract class Surface
     {
         if ($lang)
         {
+            if (! $this->cop ) { $this->cop = new Cop; }
+
+            $this->cop->check ('Lang', $lang, ['blank', 'alpha_dash', 'lang']);
+
             $this->lang = $lang;
 
             return $this;
@@ -140,6 +166,8 @@ abstract class Surface
     {
         if ($locale)
         {
+            $this->cop->check ('Locale', $lang, ['blank', 'alpha_dash']);
+
             $this->locale = $locale;
 
             return $this;
@@ -184,15 +212,4 @@ abstract class Surface
         return $this->revisions;
     }
 
-    public function title (?TitleInterface $title = null) : TitleInterface | self 
-    {
-        if ( $title )
-        {
-            $this->title = $title;
-
-            return $this;
-        }
-
-        return $this->title;
-    }
 }

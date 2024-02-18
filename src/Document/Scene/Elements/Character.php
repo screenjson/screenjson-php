@@ -16,10 +16,13 @@ use ScreenJSON\Interfaces\{
 
 use \JsonSerializable;
 
+use ScreenJSON\Cop;
 use ScreenJSON\Enums;
 
 class Character extends Element implements ElementInterface, JsonSerializable
 {
+    protected Cop $cop;
+    
     public function __construct (
         protected ?ContentInterface $content = null,
         protected ?array $config = [],

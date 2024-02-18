@@ -16,11 +16,15 @@ use ScreenJSON\Interfaces\{
 use \JsonSerializable;
 use \Carbon\Carbon;
 
+use ScreenJSON\Cop;
 use ScreenJSON\Surface;
+use ScreenJSON\Document\Scene\Elements;
 use \Exception;
 
 class Scene extends Surface implements SceneInterface, JsonSerializable
 {
+    protected Cop $cop;
+
     public function __construct (
         protected ?HeadingInterface $heading = null,
         protected ?array $authors = null,
@@ -41,19 +45,84 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         protected ?string $parent = null,
         protected ?array $body = [],
     ) {
+        $this->cop = new Cop;
+
+        if ($animals)
+        {
+            $this->animals ($animals);
+        }
+
+        if ($authors)
+        {
+            //$this->authors ($authors);
+        }
+
+        if ($cast)
+        {
+            $this->cast ($cast);
+        }
+
+        if ( $created )
+        {
+            $this->created ($created);
+        } 
+        else 
+        {
+            $this->created (Carbon::now());
+        }
+
+        if ($extra)
+        {
+            $this->extra ($extra);
+        }
+
+        if ($heading)
+        {
+            $this->heading ($heading);
+        }
+
+        if ($locations)
+        {
+            $this->locations ($locations);
+        }
+
+        if ( $modified )
+        {
+            $this->modified ($modified);
+        }
+        else 
+        {
+            $this->modified (Carbon::now());
+        }
+
+        if ($moods)
+        {
+            $this->moods ($moods);
+        }
+
+        if ($props)
+        {
+            $this->props ($props);
+        }
+
+        if ($sounds)
+        {
+            $this->sounds ($sounds);
+        }
+
+        if ($sfx)
+        {
+            $this->sfx ($sfx);
+        }
+
+        if ($wardrobe)
+        {
+            $this->wardrobe ($wardrobe);
+        }
+
         if (! $id )
         {
             $this->id = Uuid::uuid4();
-        }
-
-        if (! $created )
-        {
-            $this->created = Carbon::now();
-        }
-
-        if (! $modified )
-        {
-            $this->modified = Carbon::now();
         }
     }
 
@@ -63,6 +132,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Animal', $value, ['blank']);
+
                 $this->animals[] = trim ($value);
 
                 return $this;
@@ -70,6 +141,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Animals', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->animals[] = trim ($tag);
@@ -90,6 +163,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Cast', $value, ['blank']);
+
                 $this->cast[] = trim ($value);
 
                 return $this;
@@ -97,6 +172,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Cast', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->cast[] = trim ($tag);
@@ -109,6 +186,20 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         }
 
         return $this->cast;
+    }
+
+    public function created (?Carbon $value = null) : self | Carbon 
+    {
+        if ($value)
+        {
+            $this->cop->check ('Scene creation', $value, ['future']);
+
+            $this->created = $value;
+
+            return $this;
+        }
+
+        return $this->created;
     }
 
     public function defaults () : self 
@@ -137,6 +228,11 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
     {
         if ( $element )
         {
+            if (in_array ($element::class, [Elements\Character::class, Elements\Shot::class, Elements\Transition::class]))
+            {
+                $element?->content?->upper();
+            }
+
             $this->body[] = $element;
 
             return $this;
@@ -151,6 +247,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Extra', $value, ['blank']);
+
                 $this->extra[] = trim ($value);
 
                 return $this;
@@ -158,6 +256,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Extra', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->extra[] = trim ($tag);
@@ -170,6 +270,18 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         }
 
         return $this->extra;
+    }
+
+    public function heading (?HeadingInterface $heading = null) : self | HeadingInterface
+    {
+        if ( $heading )
+        {
+            $this->heading = $heading;
+
+            return $this;
+        }
+
+        return $this?->heading;
     }
 
     public function jsonSerialize() : array
@@ -212,6 +324,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Location', $value, ['blank']);
+
                 $this->locations[] = trim ($value);
 
                 return $this;
@@ -219,6 +333,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Locations', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->locations[] = trim ($tag);
@@ -233,12 +349,28 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         return $this->locations;
     }
 
+    public function modified (?Carbon $value = null) : self | Carbon 
+    {
+        if ($value)
+        {
+            $this->cop->check ('Scene modified', $value, ['future']);
+
+            $this->modified = $value;
+
+            return $this;
+        }
+
+        return $this->modified;
+    }
+
     public function moods (mixed $value = null) : self | array 
     {
         if ( $value )
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Mood', $value, ['blank']);
+
                 $this->moods[] = trim ($value);
 
                 return $this;
@@ -246,6 +378,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Moods', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->moods[] = trim ($tag);
@@ -266,6 +400,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Prop', $value, ['blank']);
+
                 $this->props[] = trim ($value);
 
                 return $this;
@@ -273,6 +409,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Props', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->props[] = trim ($tag);
@@ -293,6 +431,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('SFX', $value, ['blank']);
+
                 $this->sfx[] = trim ($value);
 
                 return $this;
@@ -300,6 +440,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('SFX', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->sfx[] = trim ($tag);
@@ -320,6 +462,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Sound', $value, ['blank']);
+
                 $this->sounds[] = trim ($value);
 
                 return $this;
@@ -327,6 +471,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Sounds', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->sounds[] = trim ($tag);
@@ -347,6 +493,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Tag', $value, ['blank']);
+
                 $this->tags[] = trim ($value);
 
                 return $this;
@@ -354,6 +502,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Tags', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->tags[] = trim ($tag);
@@ -374,6 +524,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('VFX', $value, ['blank']);
+
                 $this->vfx[] = trim ($value);
 
                 return $this;
@@ -381,6 +533,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('VFX', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->vfx[] = trim ($tag);
@@ -401,6 +555,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if ( is_string ($value) )
             {
+                $this->cop->check ('Wardrobe', $value, ['blank']);
+
                 $this->wardrobe[] = trim ($value);
 
                 return $this;
@@ -408,6 +564,8 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
 
             if ( is_array ($value) )
             {
+                $this->cop->check ('Wardrobe', $value, ['array_slugs']);
+
                 foreach ($value AS $tag)
                 {
                     $this->wardrobe[] = trim ($tag);

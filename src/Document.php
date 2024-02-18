@@ -18,6 +18,8 @@ use \Carbon\Carbon;
 
 class Document extends Surface implements DocumentInterface, JsonSerializable
 {
+    protected Cop $cop;
+
     public function __construct (
         protected ?CoverInterface $cover = null,
         protected ?FooterInterface $footer = null,
@@ -28,6 +30,8 @@ class Document extends Surface implements DocumentInterface, JsonSerializable
         protected array $styles = [],
         protected array $templates = [],
     ) {
+        $this->cop = new Cop;
+        
         if (! $status )
         {
             $this->status = new Status ('white', 0);

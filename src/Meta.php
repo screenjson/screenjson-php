@@ -8,14 +8,17 @@ use \Carbon\Carbon;
 
 class Meta implements MetaInterface, JsonSerializable
 {
+    protected Cop $cop;
     protected array $map = [];
 
     public function __construct (
         ?array $data = null
     ) {
+        $this->cop = new Cop;
+
         if ($data)
         {
-            $this->map = array_merge ($this->map, $data);
+            $this->add ($data);
         }
     }
 
@@ -23,6 +26,8 @@ class Meta implements MetaInterface, JsonSerializable
     {
         if ($data)
         {
+            $this->cop->check ('Meta data keys', $data, ['key_slugs']);
+
             $this->map = array_merge ($this->map, $data);
         }
 
