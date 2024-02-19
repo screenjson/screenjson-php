@@ -29,7 +29,7 @@ use ScreenJSON\Interfaces\{
 
 use \JsonSerializable;
 use \Carbon\Carbon;
-
+use \Exception;
 
 class Screenplay extends Surface implements ScreenplayInterface, JsonSerializable
 {
@@ -241,6 +241,28 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         ], $this->meta?->all() ?? []);
     }
 
+    public function output () : string 
+    {
+        return json_encode (
+            $this, 
+            JSON_PRETTY_PRINT | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP
+        );
+    }
+
+    public function representation () : object | null | bool
+    {
+        $str = json_encode ($this);
+
+        if (! $str )
+        {
+            throw new Exception ("JSON encoding error: ".json_last_error_msg());
+        }
+
+        $data = json_decode ($str);
+
+        return $data;
+    }
+
     public function registration (RegistrationInterface $registration) : self 
     {
         $this->registrations[] = $registration;
@@ -253,8 +275,41 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         return $this->registrations;
     }
 
-    public function save (ExportInterface $exporter, string $save_path) : int
+    public function save (?ExportInterface $exporter = null, string $save_path) : int
     {
+        if (! is_writable (basename ($save_path)) )
+        {
+            throw new \Exception ("Can't write to path: ".basename ($save_path));
+        }
+
+        if (! $exporter )
+        {
+            if ( $output = $this->output() )
+            {
+                file_put_contents (
+                    $save_path,
+                    $this->output (),
+                );
+            }
+
+            if (! $output )
+            {
+                throw new Exception ("JSON encoding error: ".json_last_error_msg());
+            }
+        }
+
+        if ( $exporter )
+        {
+            $this->exporter = $exporter;
+
+            file_put_contents (
+                $save_path,
+                $this->exporter
+                    ->load ($this->representation ())
+                    ->convert ()
+                    ->output ()
+            );
+        }
 
         return filesize ($save_path);
     }
