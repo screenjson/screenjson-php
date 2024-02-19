@@ -68,6 +68,15 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
             {
                 if ( isset ($config[$assignable]) )
                 {
+                    if ($assignable == 'lang')
+                    {
+                        $this->cop->check ($assignable, mb_strtoupper($config[$assignable]), ['blank', 'alpha_dash', 'lang']);
+                    }
+                    else 
+                    {
+                        $this->cop->check ($assignable, $config[$assignable], ['blank', 'alpha_dash']);
+                    }
+                    
                     $this->{$assignable} = $config[$assignable];
                 }
             }
@@ -277,10 +286,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
 
     public function save (?ExportInterface $exporter = null, string $save_path) : int
     {
-        if (! is_writable (basename ($save_path)) )
-        {
-            throw new \Exception ("Can't write to path: ".basename ($save_path));
-        }
+        $this->cop->check ('Save location', basename ($save_path), ['exists', 'writable']);
 
         if (! $exporter )
         {

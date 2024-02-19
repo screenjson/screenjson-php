@@ -13,25 +13,48 @@ Require the package:
 ### Validate a ScreenJSON document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $validator = new ScreenJSON\Validator ('myfile.json');
 
 if ( $validator->fails() )
 {
-    print $validator->errors();
+    print_r ($validator->errors());
 }
 ```
 
-### Encrypt/decrypt a ScreenJSON document
+```php
+$validator = (new ScreenJSON\Validator)
+    ->examine ('myfile.json');
+
+if ( $validator->fails() )
+{
+    print_r ($validator->errors());
+}
+```
+
+### Encrypt a ScreenJSON document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $encrypted = new ScreenJSON\Encrypter ('myfile.json')
-    ->save('encrypted.json', 'mypassword');
+    ->save ('encrypted.json', 'mypassword');
+```
 
-$decrypted = new ScreenJSON\Decrypter ('encrypted.txt', 'mypassword');
+```php
+$encrypted = (new ScreenJSON\Encrypter)
+    ->load ('myfile.json')
+    ->save ('encrypted.json', 'mypassword');
+```
+
+### Decrypt a ScreenJSON document
+
+```php
+$decrypted = new ScreenJSON\Decrypter ('encrypted.txt')
+    ->save ('decrypted.json', 'mypassword');
+```
+
+```php
+$decrypted = (new ScreenJSON\Decrypter)
+    ->load ('encrypted.txt')
+    ->save ('decrypted.json', 'mypassword');
 ```
 
 ### Import
@@ -39,40 +62,30 @@ $decrypted = new ScreenJSON\Decrypter ('encrypted.txt', 'mypassword');
 #### Import a PDF document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay = new ScreenJSON\Import\PDF ('myfile.pdf');
 ```
 
 #### Import a Final Draft Pro document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay = new ScreenJSON\Import\FinalDraft ('myfile.fdx');
 ```
 
 #### Import a FadeIn Pro document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay = new ScreenJSON\Import\FadeIn ('myfile.fadein');
 ```
 
 #### Import a Fountain (Markdown) document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay = new ScreenJSON\Import\Fountain ('myfile.fountain');
 ```
 
 #### Import a Celtx document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay = new ScreenJSON\Import\Celtx ('myfile.celtx');
 ```
 
@@ -81,114 +94,43 @@ $screenplay = new ScreenJSON\Import\Celtx ('myfile.celtx');
 #### Export a ScreenJSON file
 
 ```php
-require_once ('vendor/autoload.php');
-
-$screenplay->save ('myfile.json');
+$screenplay->save (null, 'myfile.json'); // Do not specify an exporter
 ```
 
 #### Export a YAML file
 
 ```php
-require_once ('vendor/autoload.php');
-
-$screenplay->save ('myfile.yaml');
+$screenplay->save (new ScreenJSON\Export\Yaml, 'myfile.yaml');
 ```
 
 #### Export a PDF document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay->save (new ScreenJSON\Export\PDF, 'myfile.pdf');
 ```
 
 #### Export a Final Draft Pro document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay->save (new ScreenJSON\Export\FinalDraft, 'myfile.fdx');
 ```
 
 #### Export a FadeIn Pro document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay->save (new ScreenJSON\Export\FadeIn, 'myfile.fadein');
 ```
 
 #### Export a Fountain (Markdown) document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay->save (new ScreenJSON\Export\Fountain, 'myfile.fountain');
 ```
 
 #### Export a Celtx document
 
 ```php
-require_once ('vendor/autoload.php');
-
 $screenplay->save (new ScreenJSON\Export\Celtx, 'myfile.celtx');
-```
-
-### Build a screenplay from scratch
-
-```php
-require_once ('vendor/autoload.php');
-
-use ScreenJSON\Screenplay;
-use ScreenJSON\Content;
-use ScreenJSON\Document\Title;
-use ScreenJSON\Document\Cover;
-use ScreenJSON\Document\Header;
-use ScreenJSON\Document\Footer;
-use ScreenJSON\Document\Scene;
-
-use ScreenJSON\Document\Scene\Heading;
-use ScreenJSON\Document\Scene\Elements\Action;
-use ScreenJSON\Document\Scene\Elements\Character;
-use ScreenJSON\Document\Scene\Elements\Dialogue;
-use ScreenJSON\Document\Scene\Elements\General;
-use ScreenJSON\Document\Scene\Elements\Parenthetical;
-use ScreenJSON\Document\Scene\Elements\Shot;
-use ScreenJSON\Document\Scene\Elements\Transition;
-
-$screenplay = new Screenplay (
-    new Title ('My New Screenplay') , [
-    'guid'    => 'rfc4122',
-    'lang'    => 'en',
-    'locale'  => 'en_GB',
-    'charset' => 'utf8',
-    'dir'     => 'ltr'
-]);
-
-$screenplay->cover (
-        $cover = new Cover (new Title ('My New Story'))
-    )
-    ->header ($header = (new Header)->content('Here is some header content'))
-    ->footer ($footer = (new Footer)->content('Here is some footer content'));
-
-# Content can be a string, string + lang, an array of language-keyed strings, or a Content object (same args)
-# Specify it in the constructor, or use the content() helper if you need to build the object manually
-$screenplay->scene (
-    $scene = (new Scene ($heading = new Heading (new Content ('INT'), new Content ("DON CORLEONE'S HOME OFFICE"), new Content ('DAY'), 1, 8)))
-        ->element ((new Action)->content ("Corleone stands, turning his back toward Bonasera."))
-        ->element ((new Character)->content ('DON CORLEONE'))
-        ->element ((new Parenthetical)->content ('turning, looking around'))
-        ->element ((new Dialogue ('O.C', false))->content ([
-            'en' => "You come to me on the day of my daughter's wedding, and ask me to do a murder.",
-            'fr' => "Tu es venu me voir le jour du mariage de ma fille, et tu m'as demandé de commettre un meurtre.",
-        ]))
-        ->element ((new Transition)->content ('SLOW PAN TO:'))
-        ->element ((new Action)->content ("Bonasera kisses his hand.", 'en'))
-        ->element ((new Shot)->content ("CLOSE UP ON HAND"))
-        ->element ((new General)->content ("The End"))
-)
-
-echo json_encode ($screenplay, JSON_PRETTY_PRINT);
 ```
 
 ### Laravel Integration

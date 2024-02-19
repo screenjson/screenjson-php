@@ -13,9 +13,13 @@ class Cop
         'blank'     => 'notEmpty',
         'bool_type' => 'boolType',
         'bool_val'  => 'boolVal',
+        'exists'    => 'exists',
+        'file'      => 'file',
         'hex'       => 'hexRgbColor',
         'lang'      => 'countryCode',
+        'readable'  => 'readable',
         'url'       => 'url',
+        'writable'  => 'writable',
     ];
 
     protected array $errors = [
@@ -27,6 +31,9 @@ class Cop
         'future'        => ":field can not be in the future. ",
         'hex'           => ":field must be a valid hex color value.",
         'in'            => ":field must be one of: ",
+        'mime_json'     => ":field must have a json mime type",
+        'mime_pdf'      => ":field must have a pdf mime type",
+        'mime_zip'      => ":field must have a zip mime type",
         'url'           => ":field must be a valid URL.",
     ];
 
@@ -173,6 +180,33 @@ class Cop
                         }   
                     }
 
+                break;
+
+                case 'mime_json':
+
+                    if (! v::mimetype('application/json')->validate ($value) )
+                    {
+                        throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]));
+                    }
+                
+                break;
+
+                case 'mime_pdf':
+
+                    if (! v::mimetype('application/pdf')->validate ($value) )
+                    {
+                        throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]));
+                    }
+                
+                break;
+
+                case 'mime_zip':
+
+                    if (! v::mimetype('application/zip')->validate ($value) )
+                    {
+                        throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]));
+                    }
+                
                 break;
 
                 default:

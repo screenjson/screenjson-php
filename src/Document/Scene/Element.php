@@ -74,7 +74,10 @@ abstract class Element extends Surface
                 break;
             }
 
-            $this->{$key} = $val;
+            if ( in_array ($key, ['access', 'authors', 'charset', 'css', 'dir', 'dom', 'fov', 'lang', 'interactivity', 'locked', 'omitted', 'perspective']) )
+            {
+                $this->{$key} = $val;
+            }            
         }
 
         return $this;
