@@ -1,6 +1,6 @@
 # ScreenJSON PHP SDK
 
-This package provides an SDK library for implementing ScreenJSON into a PHP application. It is a *work in progress* and should only be considered an implementation refernece.
+This package provides an SDK library for implementing ScreenJSON into a PHP application. It is a *work in progress* and should only be considered an implementation reference.
 
 ## Installation
 
