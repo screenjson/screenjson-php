@@ -8,7 +8,7 @@ interface ImportInterface
     protected string $ext;
     */
 
-    public function parse () : self
+    public function parse () : self;
 
-    public function validate () : self 
+    public function validate () : self;
 }

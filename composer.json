@@ -74,7 +74,7 @@
             "@php vendor/bin/phpcbf --standard=PSR12 src/"
         ],
         "docs": [
-            "@php vendor/bin/phpdoc -d \"src\" -t \"docs\""
+            "docker run --rm -v \"$(pwd):/data\" \"phpdoc/phpdoc:3\" -d ./src -t docs/php"
         ]
     },
         "config": {

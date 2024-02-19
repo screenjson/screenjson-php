@@ -5,6 +5,7 @@
 vendor
 build
 composer.lock
+.phpdoc
 
 # OS specific
 .DS_Store
