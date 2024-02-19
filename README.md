@@ -8,7 +8,48 @@ Require the package:
 
     composer require screenjson/screenjson-php
 
+## Console application
+
+```bash
+php screenjson decrypt ./encrypted.json ./output-clear.json mypassword
+php screenjson encrypt ./screenplay.json ./encrypted.json mypassword
+php screenjson export ./myfile.json ./myfile.fdx
+php screenjson import ./myfile.fadein ./myfile.json
+php screenjson validate ./myfile.json
+```
+
+## Docker application
+
+Build the container:
+
+```bash
+docker build -f docker/Dockerfile -t screenjson-php:latest .
+docker push screenjson/screenjson-php:latest
+```
+
+Commands:
+
+```bash
+docker run screenjson/screenjson-php decrypt ./encrypted.json ./output-clear.json mypassword
+docker run screenjson/screenjson-php encrypt ./screenplay.json ./encrypted.json mypassword
+docker run screenjson/screenjson-php export ./myfile.json ./myfile.fdx
+docker run screenjson/screenjson-php import ./myfile.fadein ./myfile.json
+docker run screenjson/screenjson-php validate ./myfile.json
+```
+
 ## Usage
+
+### Open a ScreenJSON document + misc functions
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
+
+$screenplay->output (); // Get a JSON string
+```
+
+### Get a raw JSON string rendering
+```php
+echo $screenplay->output ();
+```
 
 ### Validate a ScreenJSON document
 
@@ -103,9 +144,19 @@ $screenplay->save (null, 'myfile.json'); // Do not specify an exporter
 $screenplay->save (new ScreenJSON\Export\Yaml, 'myfile.yaml');
 ```
 
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
+$screenplay->save (new ScreenJSON\Export\Yaml, 'myfile.yaml');
+```
+
 #### Export a PDF document
 
 ```php
+$screenplay->save (new ScreenJSON\Export\PDF, 'myfile.pdf');
+```
+
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
 $screenplay->save (new ScreenJSON\Export\PDF, 'myfile.pdf');
 ```
 
@@ -115,9 +166,19 @@ $screenplay->save (new ScreenJSON\Export\PDF, 'myfile.pdf');
 $screenplay->save (new ScreenJSON\Export\FinalDraft, 'myfile.fdx');
 ```
 
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
+$screenplay->save (new ScreenJSON\Export\FinalDraft, 'myfile.fdx');
+```
+
 #### Export a FadeIn Pro document
 
 ```php
+$screenplay->save (new ScreenJSON\Export\FadeIn, 'myfile.fadein');
+```
+
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
 $screenplay->save (new ScreenJSON\Export\FadeIn, 'myfile.fadein');
 ```
 
@@ -127,9 +188,20 @@ $screenplay->save (new ScreenJSON\Export\FadeIn, 'myfile.fadein');
 $screenplay->save (new ScreenJSON\Export\Fountain, 'myfile.fountain');
 ```
 
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
+$screenplay->save (new ScreenJSON\Export\Fountain, 'myfile.fountain');
+```
+
 #### Export a Celtx document
 
 ```php
+// Build your own, then...
+$screenplay->save (new ScreenJSON\Export\Celtx, 'myfile.celtx');
+```
+
+```php
+$screenplay = (new ScreenJSON\Screenplay)->open ('myfile.json');
 $screenplay->save (new ScreenJSON\Export\Celtx, 'myfile.celtx');
 ```
 

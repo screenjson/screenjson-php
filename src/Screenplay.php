@@ -250,6 +250,15 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
         ], $this->meta?->all() ?? []);
     }
 
+    public function open (string $file_path) : self
+    {
+        $this->cop->check ('File', $file_path, ['file', 'exists', 'readable', 'mime_json']);
+
+        $this->representation = json_decode (file_get_contents ($file_path));
+
+        return $this;
+    }
+
     public function output () : string 
     {
         return json_encode (
