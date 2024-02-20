@@ -42,7 +42,7 @@ class Status extends Surface implements StatusInterface, JsonSerializable
     {
         if ($value)
         {
-            $this->cop->check ('Status color', $value, ['blank', 'alpha_dash', 'in', ["white", "blue", "pink", "yellow", "green", "goldenrod", "buff", "salmon", "cherry"]]);
+            $this->cop->check ('Status color', $value, ['blank', 'alpha_dash', 'in'], ["white", "blue", "pink", "yellow", "green", "goldenrod", "buff", "salmon", "cherry"]);
 
             $this->color = trim ($value);
 

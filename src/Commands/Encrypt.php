@@ -34,7 +34,7 @@ class Encrypt extends Command
         try 
         {
             $this->cop->check ("JSON file", $input->getArgument('in'), ['file', 'exists', 'readable', 'mime_json']);
-            $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
+            $this->cop->check ("Output file", dirname ($input->getArgument('out')), ['exists', 'writable']);
             $this->cop->check ("Password", $input->getArgument('password'), ['blank']);
     
             if ( (new Validator ($input->getArgument('in')))->fails() )

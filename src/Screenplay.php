@@ -27,6 +27,8 @@ use ScreenJSON\Interfaces\{
     TitleInterface
 };
 
+use ScreenJSON\Document\Title;
+
 use \JsonSerializable;
 use \Carbon\Carbon;
 use \Exception;
@@ -36,7 +38,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
     protected Cop $cop;
 
     public function __construct (
-        protected ?TitleInterface $title = null,
+        protected ?Title $title = null,
         protected array $config = [],
         protected ?LicenseInterface $license = null,
         protected array $authors = [],
@@ -70,7 +72,7 @@ class Screenplay extends Surface implements ScreenplayInterface, JsonSerializabl
                 {
                     if ($assignable == 'lang')
                     {
-                        $this->cop->check ($assignable, mb_strtoupper($config[$assignable]), ['blank', 'alpha_dash', 'lang']);
+                        $this->cop->check ($assignable, $config[$assignable], ['blank', 'alpha_dash', 'lang']);
                     }
                     else 
                     {

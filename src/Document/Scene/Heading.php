@@ -12,11 +12,12 @@ use \Carbon\Carbon;
 
 use ScreenJSON\Cop;
 use ScreenJSON\Meta;
+use ScreenJSON\Surface;
 
 use ScreenJSON\Enums\Context;
 use ScreenJSON\Enums\Sequence;
 
-class Heading implements HeadingInterface, JsonSerializable
+class Heading extends Surface implements HeadingInterface, JsonSerializable
 {
     protected Cop $cop;
 
@@ -65,7 +66,7 @@ class Heading implements HeadingInterface, JsonSerializable
     {
         if ($content)
         {
-            $this->cop->check ('Heading context', $content->first(), ['blank', 'alpha_dash', 'in'], ["I/E", "INT/EXT", "EXT/INT", "INT", "EXT", "POV"]);
+            //$this->cop->check ('Heading context', $content->first(), ['blank', 'alpha_dash', 'in'], ["I/E", "INT/EXT", "EXT/INT", "INT", "EXT", "POV"]);
 
             $this->context = $content;
             $this->context->upper();
@@ -144,7 +145,7 @@ class Heading implements HeadingInterface, JsonSerializable
     {
         if ($content)
         {
-            $this->cop->check ('Heading context', $content->first(), ['blank', 'alpha_dash', 'in'], ["DAY", "NIGHT", "DAWN", "DUSK", "LATER", "MOMENTS LATER", "CONTINUOUS", "MORNING", "AFTERNOON", "EVENING", "THE NEXT DAY"]);
+            //$this->cop->check ('Heading sequence', $content->first(), ['blank', 'alpha_dash', 'in'], ["DAY", "NIGHT", "DAWN", "DUSK", "LATER", "MOMENTS LATER", "CONTINUOUS", "MORNING", "AFTERNOON", "EVENING", "THE NEXT DAY"]);
 
             $this->sequence = $content;
             $this->sequence->upper();

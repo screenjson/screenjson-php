@@ -79,7 +79,7 @@ class Dialogue extends Element implements ElementInterface, JsonSerializable
     {
         if ($value)
         {
-            $this->cop->check ("Origin", $value, ['blank', 'alpha_dash', 'in'], ["V.O", "O.S", "O.C", "FILTER"]);
+            $this->cop->check ("Origin", $value, ['blank', 'in'], ["V.O", "V.O.", "O.S", "O.S.", "O.C", "O.C.", "FILTER"]);
 
             $this->origin = trim (mb_strtoupper($value));
 

@@ -53,11 +53,11 @@ class Import extends Command
         try 
         {
             $this->cop->check ("File", $input->getArgument('in'), ['file', 'exists', 'readable']);
-            $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
+            $this->cop->check ("Output path ", dirname ($input->getArgument('out')), ['exists', 'writable']);
     
             $ext = pathinfo ($input->getArgument('in'), PATHINFO_EXTENSION);
     
-            if (array_key_exists ($ext, $this->engines))
+            if (! array_key_exists ($ext, $this->engines) )
             {
                 $output->writeln ($ext . " is not a supported file extension.");
     
@@ -75,12 +75,12 @@ class Import extends Command
     
             $screenplay = new $this->engines[$ext] ($input->getArgument('in'));
     
-            return $screenplay->save (null, $input->getArgument('out'))
+            return $screenplay->save ($input->getArgument('out'))
                 ? COMMAND::SUCCESS : COMMAND::FAILURE;
         }
         catch (Exception $e)
         {
-            $output->writeln ("FAILED: ".$e->getMessage());
+            $output->writeln ("FAILED: [".$e::class."] ".$e->getMessage());
             
             return COMMAND::FAILURE;
         }

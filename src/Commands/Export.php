@@ -45,11 +45,11 @@ class Export extends Command
         try 
         {
             $this->cop->check ("File", $input->getArgument('in'), ['file', 'exists', 'readable', 'mime_json']);
-            $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
+            $this->cop->check ("Output file", dirname ($input->getArgument('out')), ['writable']);
     
             $ext = pathinfo ($input->getArgument('out'), PATHINFO_EXTENSION);
     
-            if (array_key_exists ($ext, $this->engines))
+            if (! array_key_exists ($ext, $this->engines) )
             {
                 $output->writeln ($ext . " is not a supported file extension.");
     

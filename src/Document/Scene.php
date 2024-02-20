@@ -230,7 +230,7 @@ class Scene extends Surface implements SceneInterface, JsonSerializable
         {
             if (in_array ($element::class, [Elements\Character::class, Elements\Shot::class, Elements\Transition::class]))
             {
-                $element?->content?->upper();
+                $element?->content()?->upper();
             }
 
             $this->body[] = $element;

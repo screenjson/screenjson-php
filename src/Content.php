@@ -55,7 +55,7 @@ class Content implements ContentInterface, Translatable, Encryptable, JsonSerial
             }
             else 
             {
-                $this->translations[$lang] = trim ($str);
+                $this->translations[$this->lang ?? Enums\Language::ENGLISH] = trim ($str);
             }
         }
 
@@ -75,7 +75,7 @@ class Content implements ContentInterface, Translatable, Encryptable, JsonSerial
             }
         }
 
-        return $this->translations[0];
+        return $this->translations[0] ?? '';
     }
 
     public function jsonSerialize() : array

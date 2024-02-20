@@ -16,7 +16,6 @@ class Cop
         'exists'    => 'exists',
         'file'      => 'file',
         'hex'       => 'hexRgbColor',
-        'lang'      => 'countryCode',
         'readable'  => 'readable',
         'url'       => 'url',
         'writable'  => 'writable',
@@ -28,13 +27,18 @@ class Cop
         'blank'         => ":field can not be blank.",
         'bool_type'     => ':field must be a true/false boolean.',
         'bool_val'      => ':field must be a true/false boolean.',
+        'exists'        => ":field must exist on disk.",
+        'file'          => ":field must be a valid file.",
         'future'        => ":field can not be in the future. ",
         'hex'           => ":field must be a valid hex color value.",
+        'lang'          => ":field must be a valid language/country code.",
         'in'            => ":field must be one of: ",
         'mime_json'     => ":field must have a json mime type",
         'mime_pdf'      => ":field must have a pdf mime type",
         'mime_zip'      => ":field must have a zip mime type",
+        'readable'      => ":field must be readable.",
         'url'           => ":field must be a valid URL.",
+        'writable'      => ":field must be writable.",
     ];
 
     public function check (string $field, mixed $value, array $rules = [], array $allowed = [])
@@ -156,7 +160,7 @@ class Cop
 
                     if ( count ($allowed) )
                     {
-                        if ( in_array ($value, $allowed) )
+                        if (! in_array ($value, $allowed) )
                         {
                             throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]). implode (', ', $allowed));
                         }
@@ -177,6 +181,17 @@ class Cop
                         {
                             throw new UnexpectedValueException ("Array keys may only be letters, numbers, dashes, and underscores.");
                         }   
+                    }
+
+                break;
+
+                case 'lang':
+                    
+                    $langs = ['ab','aa','af','ak','sq','am','ar','an','hy','as','av','ae','ay','az','bm','ba','eu','be','bn','bh','bi','bs','br','bg','my','ca','km','ch','ce','ny','zh','cu','cv','kw','co','cr','hr','cs','da','dv','nl','dz','en','eo','et','ee','fo','fj','fi','fr','ff','gd','gl','lg','ka','de','ki','el','kl','gn','gu','ht','ha','he','hz','hi','ho','hu','is','io','ig','id','ia','ie','iu','ik','ga','it','ja','jv','kn','kr','ks','kk','rw','kv','kg','ko','kj','ku','ky','lo','la','lv','lb','li','ln','lt','lu','mk','mg','ms','ml','mt','gv','mi','mr','mh','ro','mn','na','nv','nd','ng','ne','se','no','nb','nn','ii','oc','oj','or','om','os','pi','pa','ps','fa','pl','pt','qu','rm','rn','ru','sm','sg','sa','sc','sr','sn','sd','si','sk','sl','so','st','nr','es','su','sw','ss','sv','tl','ty','tg','ta','tt','te','th','bo','ti','to','ts','tn','tr','tk','tw','ug','uk','ur','uz','ve','vi','vo','wa','cy','fy','wo','xh','yi','yo','za','zu'];
+                
+                    if (! in_array ($value, $langs) ) 
+                    {
+                        throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]));
                     }
 
                 break;
@@ -212,7 +227,7 @@ class Cop
 
                     if (! v::{$this->funcs[$rule]}()->validate ($value) )
                     {
-                        throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]));
+                        throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule] ?? ''));
                     }
                     
                 break;

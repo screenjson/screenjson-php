@@ -31,7 +31,7 @@ class PDF extends Importer implements PDFInterface, ImportInterface, ParserInter
 
     public function validate () : self 
     {
-        if (! pathinfo ($this->file_path, PATHINFO_EXTENSION) != $this->ext )
+        if ( pathinfo ($this->file_path, PATHINFO_EXTENSION) != $this->ext )
         {
             throw new InvalidFileFormatException ("File extension must be ".$this->ext);
         }

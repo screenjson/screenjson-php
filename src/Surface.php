@@ -58,9 +58,9 @@ abstract class Surface
         return $this->charset;
     }
 
-    public function content (mixed $value = null, ?string $lang = null) : string | self 
+    public function content (mixed $value = null, ?string $lang = null) : string | ContentInterface | self 
     {
-        if (! $this->cop ) { $this->cop = new Cop; }
+        $this->cop = new Cop;
 
         if ($lang)
         {
