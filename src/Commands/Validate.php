@@ -22,6 +22,7 @@ class Validate extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Check if a ScreenHJSON file complies with the official schema.');
         $this->addArgument ('in', InputArgument::REQUIRED, 'The ScreenJSON file you want to validate.');
 
         $this->cop = new Cop;

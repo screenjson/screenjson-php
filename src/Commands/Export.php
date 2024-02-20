@@ -25,6 +25,7 @@ class Export extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Convert a ScreenJSON file to a different format [fdx|fadein|fountain|celtx|pdf|yaml].');
         $this->addArgument ('in', InputArgument::REQUIRED, 'The ScreenJSON file you want to export.');
         $this->addArgument ('out', InputArgument::REQUIRED, 'The file you want to save [fdx|fadein|fountain|celtx|pdf|yaml].');
 

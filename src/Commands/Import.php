@@ -24,6 +24,7 @@ class Import extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Convert a screenwriting file into a ScreenJSON file [fdx|fadein|fountain|celtx|pdf|yaml].');
         $this->addArgument ('in', InputArgument::REQUIRED, 'The file you want to import [fdx|fadein|fountain|celtx|pdf|yaml].');
         $this->addArgument ('out', InputArgument::REQUIRED, 'The ScreenJSON file you want to save.');
 

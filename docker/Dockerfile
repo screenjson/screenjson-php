@@ -4,16 +4,15 @@ FROM php:8.3.3-cli-alpine
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-COPY . /usr/src/checkfolder
-WORKDIR /usr/src/checkfolder
+COPY . /app
+
+WORKDIR /app
 
 RUN apk update && \
-    apk add git zlib-dev zip unzip libyaml && \
+    apk add git zlib-dev zip unzip libxml2-dev libzip-dev poppler-utils yq && \
     docker-php-ext-install zip && \
-    docker-php-ext-install xml
-
-RUN apk add libyaml-dev
-RUN pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini && docker-php-ext-enable yaml
+    docker-php-ext-install xml && \
+    docker-php-ext-install bcmath
 
 RUN echo "memory_limit=1024M" > /usr/local/etc/php/conf.d/memory-limit.ini
 RUN curl --silent --show-error https://getcomposer.org/installer | php && \

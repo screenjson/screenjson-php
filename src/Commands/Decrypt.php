@@ -22,6 +22,7 @@ class Decrypt extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Decrypt a ScreenJSON file.');
         $this->addArgument ('in', InputArgument::REQUIRED, 'The encrypted ScreenJSON file you want to decrypt.');
         $this->addArgument ('out', InputArgument::REQUIRED, 'The decrypted file you want to save.');
         $this->addArgument ('password', InputArgument::REQUIRED, 'The password you want to use.');

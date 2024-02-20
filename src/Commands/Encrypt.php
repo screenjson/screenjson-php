@@ -22,6 +22,7 @@ class Encrypt extends Command
 
     protected function configure(): void
     {
+        $this->setDescription('Encrypt a ScreenJSON file.');
         $this->addArgument ('in', InputArgument::REQUIRED, 'The ScreenJSON file you want to encrypt.');
         $this->addArgument ('out', InputArgument::REQUIRED, 'The encrypted file you want to save.');
         $this->addArgument ('password', InputArgument::REQUIRED, 'The password you want to use.');

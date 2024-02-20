@@ -9,6 +9,7 @@ use ScreenJSON\Commands;
 
 $application = new Application();
 
+$application->add (new Commands\Binaries);
 $application->add (new Commands\Decrypt);
 $application->add (new Commands\Encrypt);
 $application->add (new Commands\Export);
