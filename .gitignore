@@ -9,3 +9,5 @@ composer.lock
 
 # OS specific
 .DS_Store
+
+The_Cold_Open*

@@ -12,6 +12,8 @@ use ScreenJSON\Cop;
 use ScreenJSON\Import AS Importers;
 use ScreenJSON\Interfaces\ImportInterface;
 
+use \Exception;
+
 #[AsCommand(name: 'import')]
 class Import extends Command
 {
@@ -48,30 +50,39 @@ class Import extends Command
 
     protected function execute (InputInterface $input, OutputInterface $output): int
     {
-        $this->cop->check ("File", $input->getArgument('in'), ['file', 'exists', 'readable']);
-        $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
-
-        $ext = pathinfo ($input->getArgument('in'), PATHINFO_EXTENSION);
-
-        if (array_key_exists ($ext, $this->engines))
+        try 
         {
-            $output->writeln ($ext . " is not a supported file extension.");
-
+            $this->cop->check ("File", $input->getArgument('in'), ['file', 'exists', 'readable']);
+            $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
+    
+            $ext = pathinfo ($input->getArgument('in'), PATHINFO_EXTENSION);
+    
+            if (array_key_exists ($ext, $this->engines))
+            {
+                $output->writeln ($ext . " is not a supported file extension.");
+    
+                return COMMAND::FAILURE;
+            }
+    
+            $mime = mime_content_type ($input->getArgument('in'));
+    
+            if ($mime != $this->mimes[$ext])
+            {
+                $output->writeln ("File has a mime type (".$mime.") incompatible with its extension (".$this->mimes[$ext].").");
+    
+                return COMMAND::FAILURE;
+            }
+    
+            $screenplay = new $this->engines[$ext] ($input->getArgument('in'));
+    
+            return $screenplay->save (null, $input->getArgument('out'))
+                ? COMMAND::SUCCESS : COMMAND::FAILURE;
+        }
+        catch (Exception $e)
+        {
+            $output->writeln ("FAILED: ".$e->getMessage());
+            
             return COMMAND::FAILURE;
         }
-
-        $mime = mime_content_type ($input->getArgument('in'));
-
-        if ($mime != $this->mimes[$ext])
-        {
-            $output->writeln ("File has a mime type (".$mime.") incompatible with its extension (".$this->mimes[$ext].").");
-
-            return COMMAND::FAILURE;
-        }
-
-        $screenplay = new $this->engines[$ext] ($input->getArgument('in'));
-
-        return $screenplay->save (null, $input->getArgument('out'))
-            ? COMMAND::SUCCESS : COMMAND::FAILURE;
     }
 }

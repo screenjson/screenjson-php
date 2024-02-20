@@ -12,6 +12,8 @@ use ScreenJSON\Cop;
 use ScreenJSON\Decrypter;
 use ScreenJSON\Validator;
 
+use \Exception;
+
 #[AsCommand(name: 'decrypt')]
 class Decrypt extends Command
 {
@@ -29,20 +31,29 @@ class Decrypt extends Command
 
     protected function execute (InputInterface $input, OutputInterface $output): int
     {
-        $this->cop->check ("JSON file", $input->getArgument('in'), ['file', 'exists', 'readable', 'mime_json']);
-        $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
-        $this->cop->check ("Password", $input->getArgument('password'), ['blank']);
-
-        if ( (new Validator ($input->getArgument('in')))->fails() )
+        try 
         {
-            $output->writeln ("That file does not contain valid ScreenJSON formatting. Can't continue.");
+            $this->cop->check ("JSON file", $input->getArgument('in'), ['file', 'exists', 'readable', 'mime_json']);
+            $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
+            $this->cop->check ("Password", $input->getArgument('password'), ['blank']);
+    
+            if ( (new Validator ($input->getArgument('in')))->fails() )
+            {
+                $output->writeln ("That file does not contain valid ScreenJSON formatting. Can't continue.");
+                
+                return COMMAND::FAILURE;
+            }
+    
+            $this->decrypter = (new Decrypter)->load ($input->getArgument('in'));
+    
+            return $this->decrypter->save ($input->getArgument('out'), $input->getArgument('password')) 
+                ? Command::SUCCESS : Command::FAILURE;
+        }
+        catch (Exception $e)
+        {
+            $output->writeln ("FAILED: ".$e->getMessage());
             
             return COMMAND::FAILURE;
         }
-
-        $this->decrypter = (new Decrypter)->load ($input->getArgument('in'));
-
-        return $this->decrypter->save ($input->getArgument('out'), $input->getArgument('password')) 
-            ? Command::SUCCESS : Command::FAILURE;
     }
 }

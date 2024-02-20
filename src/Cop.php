@@ -58,8 +58,7 @@ class Cop
                     {
                         throw new UnexpectedValueException (str_replace (':field', $field, $this->errors[$rule]));
                     }
-    
-                    continue;
+
                 break;
 
                 case 'array_lang_content':

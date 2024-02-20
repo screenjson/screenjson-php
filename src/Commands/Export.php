@@ -14,6 +14,8 @@ use ScreenJSON\Interfaces\ExportInterface;
 use ScreenJSON\Screenplay;
 use ScreenJSON\Validator;
 
+use \Exception;
+
 #[AsCommand(name: 'export')]
 class Export extends Command
 {
@@ -40,28 +42,37 @@ class Export extends Command
 
     protected function execute (InputInterface $input, OutputInterface $output): int
     {
-        $this->cop->check ("File", $input->getArgument('in'), ['file', 'exists', 'readable', 'mime_json']);
-        $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
-
-        $ext = pathinfo ($input->getArgument('out'), PATHINFO_EXTENSION);
-
-        if (array_key_exists ($ext, $this->engines))
+        try 
         {
-            $output->writeln ($ext . " is not a supported file extension.");
-
-            return COMMAND::FAILURE;
+            $this->cop->check ("File", $input->getArgument('in'), ['file', 'exists', 'readable', 'mime_json']);
+            $this->cop->check ("Output file", basename ($input->getArgument('out')), ['exists', 'writable']);
+    
+            $ext = pathinfo ($input->getArgument('out'), PATHINFO_EXTENSION);
+    
+            if (array_key_exists ($ext, $this->engines))
+            {
+                $output->writeln ($ext . " is not a supported file extension.");
+    
+                return COMMAND::FAILURE;
+            }
+    
+            if ( (new Validator ($input->getArgument('in')))->fails() )
+            {
+                $output->writeln ("That file does not contain valid ScreenJSON formatting. Can't continue.");
+                
+                return COMMAND::FAILURE;
+            }
+    
+            $screenplay = (new Screenplay)->open ($input->getArgument('in'));    
+    
+            return $screenplay->save (new $this->engines[$ext], $input->getArgument('out'))
+                ? COMMAND::SUCCESS : COMMAND::FAILURE;
         }
-
-        if ( (new Validator ($input->getArgument('in')))->fails() )
+        catch (Exception $e)
         {
-            $output->writeln ("That file does not contain valid ScreenJSON formatting. Can't continue.");
+            $output->writeln ("FAILED: ".$e->getMessage());
             
             return COMMAND::FAILURE;
         }
-
-        $screenplay = (new Screenplay)->open ($input->getArgument('in'));    
-
-        return $screenplay->save (new $this->engines[$ext], $input->getArgument('out'))
-            ? COMMAND::SUCCESS : COMMAND::FAILURE;
     }
 }
